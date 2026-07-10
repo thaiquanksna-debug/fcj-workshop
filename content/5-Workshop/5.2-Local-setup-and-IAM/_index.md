@@ -58,7 +58,7 @@ Open AWS Console with an administrator account.
 
 1. Search for **IAM Identity Center**.
 2. Open **IAM Identity Center**.
-![Photo](/fcj-workshop/images/5-Workshop/private-by-default/screen21.png)
+![Photo](/fcj-workshop/images/5-Workshop/private-by-default/screen2,1.png)
 
 3. If IAM Identity Center is not enabled, click **Enable**.
 ![Photo](/fcj-workshop/images/5-Workshop/private-by-default/screen2,2.jpg)
