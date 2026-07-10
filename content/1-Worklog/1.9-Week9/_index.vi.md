@@ -1,59 +1,39 @@
 ---
-title: "Worklog Tuần 9"
-date: 2024-01-01
-weight: 1
+title: "Worklog tuần 9"
+weight: 9
 chapter: false
-pre: " <b> 1.9. </b> "
+pre: " <b>1.9 </b> "
 ---
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
+
+#  Tài liệu hóa workshop, blog và mapping nguồn học
+
+**Thời gian:** 08/06/2026 - 14/06/2026
+
+## Mục tiêu tuần 9
+
+- Chuẩn hóa cách ghi tài liệu kỹ thuật trong Hugo workshop.
+- Mapping các nguồn lab AWS Study Group và AWS Docs vào nội dung báo cáo.
+- Chuẩn bị các phần blog/event/feedback không trùng với phần proposal.
+
+---
+
+## Các công việc cần triển khai trong tuần này
+
+| Thứ | Công việc | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu |
+|---|---|---|---|---|
+| 2 | - Kiểm tra mục BlogsPosted, EventParticipated, Workshop, Self-Assessment và Feedback trong content<br>- Ghi danh sách trang cần bổ sung nội dung hoặc ảnh minh họa | 08/06/2026 | 08/06/2026 | [AWS Study Group Cloud Journey](https://cloudjourney.awsstudygroup.com/vi/) |
+| 3 | - Tổng hợp nguồn học từ các lab 000001-000008: Free Tier, IAM, VPC, EC2, RDS, ASG, Budget, CloudWatch<br>- Đưa nguồn vào ghi chú để dùng thống nhất trong worklog/proposal | 09/06/2026 | 09/06/2026 | [AWS Free Tier](https://000001.awsstudygroup.com/vi/)<br>[IAM Workshop](https://000002.awsstudygroup.com/vi/)<br>[VPC Workshop](https://000003.awsstudygroup.com/vi/)<br>[EC2 Workshop](https://000004.awsstudygroup.com/vi/) |
+| 4 | - Viết nháp phần mô tả workshop theo hướng người đọc tự triển khai được<br>- Sửa câu chữ để phân biệt hướng dẫn lab với báo cáo kết quả | 10/06/2026 | 10/06/2026 | [AWS Documentation](https://docs.aws.amazon.com/)<br>[AWS Well-Architected Framework](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html) |
+| 5 | - Tạo checklist ảnh cần đưa vào workshop: diagram, terminal output, AWS Console, log, metric, alarm, cleanup<br>- Ghi chú vị trí đặt ảnh trong từng trang | 11/06/2026 | 11/06/2026 | [CloudWatch Docs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html)<br>[RDS Docs](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html) |
+| 6-CN | - Review lại các trang đã viết để tránh trùng nội dung với bạn cùng nhóm<br>- Chuẩn bị nội dung riêng cho tuần 10 trước khi sang giai đoạn proposal chung | 12/06/2026 | 14/06/2026 | [AWS Study Group](https://cloudjourney.awsstudygroup.com/vi/)<br>[AWS Documentation](https://docs.aws.amazon.com/) |
+
+---
+
+## Kết quả đạt được tuần 9
+
+- Chuẩn hóa được nguồn học và cách ghi link tài liệu trong site.
+- Có checklist ảnh/evidence cho workshop.
+- Tách được phần tài liệu học cá nhân khỏi phần proposal chung để 10 tuần đầu không giống nhau quá nhiều.
 
 
-### Mục tiêu tuần 9:
-
-* Kết nối, làm quen với các thành viên trong First Cloud AI Journey.
-* Hiểu dịch vụ AWS cơ bản, cách dùng console & CLI.
-
-### Các công việc cần triển khai trong tuần này:
-| Thứ | Công việc                                                                                                                                                                                   | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu                            |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | --------------- | ----------------------------------------- |
-| 2   | - Làm quen với các thành viên FCAJ <br> - Đọc và lưu ý các nội quy, quy định tại đơn vị thực tập                                                                                             | 11/08/2025   | 11/08/2025      |
-| 3   | - Tìm hiểu AWS và các loại dịch vụ <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                            | 12/08/2025   | 12/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Tạo AWS Free Tier account <br> - Tìm hiểu AWS Console & AWS CLI <br> - **Thực hành:** <br>&emsp; + Tạo AWS account <br>&emsp; + Cài AWS CLI & cấu hình <br> &emsp; + Cách sử dụng AWS CLI | 13/08/2025   | 13/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Tìm hiểu EC2 cơ bản: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - Các cách remote SSH vào EC2 <br> - Tìm hiểu Elastic IP   <br>                  | 14/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Thực hành:** <br>&emsp; + Tạo EC2 instance <br>&emsp; + Kết nối SSH <br>&emsp; + Gắn EBS volume                                                                                         | 15/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-
-
-### Kết quả đạt được tuần 9:
-
-* Hiểu AWS là gì và nắm được các nhóm dịch vụ cơ bản: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
-
-* Đã tạo và cấu hình AWS Free Tier account thành công.
-
-* Làm quen với AWS Management Console và biết cách tìm, truy cập, sử dụng dịch vụ từ giao diện web.
-
-* Cài đặt và cấu hình AWS CLI trên máy tính bao gồm:
-  * Access Key
-  * Secret Key
-  * Region mặc định
-  * ...
-
-* Sử dụng AWS CLI để thực hiện các thao tác cơ bản như:
-
-  * Kiểm tra thông tin tài khoản & cấu hình
-  * Lấy danh sách region
-  * Xem dịch vụ EC2
-  * Tạo và quản lý key pair
-  * Kiểm tra thông tin dịch vụ đang chạy
-  * ...
-
-* Có khả năng kết nối giữa giao diện web và CLI để quản lý tài nguyên AWS song song.
-* ...
-
-
+---

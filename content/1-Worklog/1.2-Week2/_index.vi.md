@@ -1,59 +1,39 @@
 ---
-title: "Worklog Tuần 2"
-date: 2024-01-01
-weight: 1
+title: "Worklog tuần 2"
+weight: 2
 chapter: false
-pre: " <b> 1.2. </b> "
+pre: " <b>1.2 </b> "
 ---
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
+
+# AWS Free Tier, Billing, Budget và quản trị chi phí
+
+**Thời gian:** 20/04/2026 - 26/04/2026
+
+## Mục tiêu tuần 2
+
+- Hiểu Free Tier, credit, billing dashboard và giới hạn chi phí khi làm lab.
+- Tạo budget và cảnh báo chi phí để kiểm soát tài khoản thực tập.
+- Ghi lại danh sách resource có rủi ro phát sinh chi phí cao.
+
+---
+
+## Các công việc cần triển khai trong tuần này
+
+| Thứ | Công việc | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu |
+|---|---|---|---|---|
+| 2 | - Đọc kỹ lab AWS Free Tier 2025 và các mục nhận credit/bảo vệ tài khoản<br>- Ghi chú sự khác nhau giữa free credit và tài nguyên Always Free | 20/04/2026 | 20/04/2026 | [AWS Free Tier Workshop](https://000001.awsstudygroup.com/vi/) |
+| 3 | - Học AWS Budgets: Cost Budget, Usage Budget, RI Budget, Savings Plans Budget<br>- Xác định budget phù hợp với tài khoản lab | 21/04/2026 | 21/04/2026 | [AWS Budgets Workshop](https://000007.awsstudygroup.com/vi/) |
+| 4 | - Tạo Cost Budget và threshold cảnh báo<br>- Tạo ghi chú cách đọc actual cost, forecast cost và service cost breakdown | 22/04/2026 | 22/04/2026 | [Create Cost Budget](https://000007.awsstudygroup.com/vi/)<br>[AWS Free Tier Workshop](https://000001.awsstudygroup.com/vi/) |
+| 5 | - Lập danh sách resource cần chú ý: RDS, NAT Gateway, Load Balancer, EIP, snapshot, log retention<br>- Gắn checklist cleanup vào cuối mỗi lab | 23/04/2026 | 23/04/2026 | [AWS Budget Workshop](https://000007.awsstudygroup.com/vi/)<br>[RDS Docs](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html)<br>[EC2 Docs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html) |
+| 6-CN | - Kiểm tra billing dashboard sau các thao tác lab<br>- Viết lại phần bài học chi phí để dùng trong proposal cuối kỳ | 24/04/2026 | 26/04/2026 | [AWS Free Tier Workshop](https://000001.awsstudygroup.com/vi/)<br>[AWS Well-Architected Framework](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html) |
+
+---
+
+## Kết quả đạt được tuần 2
+
+- Thiết lập được tư duy kiểm soát chi phí trước khi triển khai dịch vụ AWS.
+- Biết tạo và đọc AWS Budgets ở mức thực tập.
+- Có danh sách resource cần cleanup sau mỗi buổi làm lab để giảm rủi ro phát sinh phí.
 
 
-### Mục tiêu tuần 2:
-
-* Kết nối, làm quen với các thành viên trong First Cloud AI Journey.
-* Hiểu dịch vụ AWS cơ bản, cách dùng console & CLI.
-
-### Các công việc cần triển khai trong tuần này:
-| Thứ | Công việc                                                                                                                                                                                   | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu                            |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | --------------- | ----------------------------------------- |
-| 2   | - Làm quen với các thành viên FCAJ <br> - Đọc và lưu ý các nội quy, quy định tại đơn vị thực tập                                                                                             | 11/08/2025   | 11/08/2025      |
-| 3   | - Tìm hiểu AWS và các loại dịch vụ <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                            | 12/08/2025   | 12/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Tạo AWS Free Tier account <br> - Tìm hiểu AWS Console & AWS CLI <br> - **Thực hành:** <br>&emsp; + Tạo AWS account <br>&emsp; + Cài AWS CLI & cấu hình <br> &emsp; + Cách sử dụng AWS CLI | 13/08/2025   | 13/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Tìm hiểu EC2 cơ bản: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - Các cách remote SSH vào EC2 <br> - Tìm hiểu Elastic IP   <br>                  | 14/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Thực hành:** <br>&emsp; + Tạo EC2 instance <br>&emsp; + Kết nối SSH <br>&emsp; + Gắn EBS volume                                                                                         | 15/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-
-
-### Kết quả đạt được tuần 2:
-
-* Hiểu AWS là gì và nắm được các nhóm dịch vụ cơ bản: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
-
-* Đã tạo và cấu hình AWS Free Tier account thành công.
-
-* Làm quen với AWS Management Console và biết cách tìm, truy cập, sử dụng dịch vụ từ giao diện web.
-
-* Cài đặt và cấu hình AWS CLI trên máy tính bao gồm:
-  * Access Key
-  * Secret Key
-  * Region mặc định
-  * ...
-
-* Sử dụng AWS CLI để thực hiện các thao tác cơ bản như:
-
-  * Kiểm tra thông tin tài khoản & cấu hình
-  * Lấy danh sách region
-  * Xem dịch vụ EC2
-  * Tạo và quản lý key pair
-  * Kiểm tra thông tin dịch vụ đang chạy
-  * ...
-
-* Có khả năng kết nối giữa giao diện web và CLI để quản lý tài nguyên AWS song song.
-* ...
-
-
+---

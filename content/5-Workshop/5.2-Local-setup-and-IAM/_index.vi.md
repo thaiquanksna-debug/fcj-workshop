@@ -55,38 +55,38 @@ Mở AWS Console bằng tài khoản administrator (quản trị viên).
 
 1. Tìm kiếm **IAM Identity Center**.
 2. Mở **IAM Identity Center**.
-![Photo](/images/5-Workshop/private-by-default/screen2,1.png)
+![Photo](/fcj-workshop/images/5-Workshop/private-by-default/screen2,1.png)
 
 3. Nếu IAM Identity Center chưa được bật, nhấp vào **Enable**.
-![Photo](/images/5-Workshop/private-by-default/screen2,2.jpg)
-![Photo](/images/5-Workshop/private-by-default/screen2,3.jpg)
+![Photo](/fcj-workshop/images/5-Workshop/private-by-default/screen2,2.jpg)
+![Photo](/fcj-workshop/images/5-Workshop/private-by-default/screen2,3.jpg)
 
 4. Đi tới mục **Users**.
 5. Nhấp vào **Add user**.
-![Photo](/images/5-Workshop/private-by-default/screen2,4.jpg)
+![Photo](/fcj-workshop/images/5-Workshop/private-by-default/screen2,4.jpg)
 6. Tên người dùng (User name): `mvp-builder`.
 7. Email: sử dụng email sẽ dùng để đăng nhập vào AWS.
 8. Hoàn tất việc tạo người dùng.
-![Photo](/images/5-Workshop/private-by-default/screen2,5.jpg)
+![Photo](/fcj-workshop/images/5-Workshop/private-by-default/screen2,5.jpg)
 
 # 3. Tạo tập hợp quyền (Permission set)
 
 1. Trong **IAM Identity Center**, đi tới mục **Permission sets**.
-![Photo](/images/5-Workshop/private-by-default/screen2,6.png)
+![Photo](/fcj-workshop/images/5-Workshop/private-by-default/screen2,6.png)
 
 2. Nhấp vào **Create permission set**.
-![Photo](/images/5-Workshop/private-by-default/screen2,7.png)
+![Photo](/fcj-workshop/images/5-Workshop/private-by-default/screen2,7.png)
 
 3. Chọn **Custom permission set**.
-![Photo](/images/5-Workshop/private-by-default/screen2,8.jpg)
+![Photo](/fcj-workshop/images/5-Workshop/private-by-default/screen2,8.jpg)
 4. Tên tập hợp quyền (Permission set name): `PrivateWorkloadTerraformOperator`.
 5. Thời gian phiên làm việc (Session duration): chọn 4 giờ hoặc 8 giờ.
 6. Tạo tập hợp quyền.
-![Photo](/images/5-Workshop/private-by-default/screen2,9.png)
+![Photo](/fcj-workshop/images/5-Workshop/private-by-default/screen2,9.png)
 7. Mở `PrivateWorkloadTerraformOperator`.
 8. Đi tới **Permissions Set và nhấp vào MVPTerraformOperator**.
 9. Nhấp vào **Add inline policy** hoặc **Edit inline policy**.
-![Photo](/images/5-Workshop/private-by-default/screen2,10.jpg)
+![Photo](/fcj-workshop/images/5-Workshop/private-by-default/screen2,10.jpg)
 
 10. Chọn tab **JSON**.
 11. Xóa bất kỳ đoạn JSON giữ chỗ (placeholder) nào đang có sẵn.
@@ -512,21 +512,21 @@ Chính sách inline đầy đủ:
 ~~~
 
 13. Nhấp Create hoặc Save changes để lưu lại.
-![Photo](/images/5-Workshop/private-by-default/screen2,11.jpg)
+![Photo](/fcj-workshop/images/5-Workshop/private-by-default/screen2,11.jpg)
 
 # 4. Gán người dùng vào tài khoản AWS
 
 1. Trong **IAM Identity Center**, đi tới mục **AWS accounts**.
 2. Chọn tài khoản AWS mục tiêu.
 3. Nhấp **Assign users or groups**.
-![Photo](/images/5-Workshop/private-by-default/screen4,1.png)
+![Photo](/fcj-workshop/images/5-Workshop/private-by-default/screen4,1.png)
 
 4. Chọn người dùng `mvp-builder`.
-![Photo](/images/5-Workshop/private-by-default/screen4,2.png)
+![Photo](/fcj-workshop/images/5-Workshop/private-by-default/screen4,2.png)
 5. Chọn tập hợp quyền `PrivateWorkloadTerraformOperator`.
-![Photo](/images/5-Workshop/private-by-default/screen4,3.png)
+![Photo](/fcj-workshop/images/5-Workshop/private-by-default/screen4,3.png)
 6. Gửi (Submit) yêu cầu gán người dùng.
-![Photo](/images/5-Workshop/private-by-default/screen4,4.png)
+![Photo](/fcj-workshop/images/5-Workshop/private-by-default/screen4,4.png)
 
 # 5. Cấu hình AWS CLI SSO profile
 

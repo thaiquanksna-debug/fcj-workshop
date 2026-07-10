@@ -73,7 +73,7 @@ With an estimated 24/7 monthly cost of approximately **85–95 USD**, this is no
 
 ### 3. Solution Architecture
 
-![Secure Internal Job Processing Platform Architecture](/images/2-Proposal/secure-internal-job-processing-architecture.png)
+![Secure Internal Job Processing Platform Architecture](/fcj-workshop/images/2-Proposal/private-by-default/architecture.png)
 
 **Figure:** Architecture diagram of the Secure Internal Job Processing Platform on AWS.
 

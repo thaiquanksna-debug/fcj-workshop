@@ -1,57 +1,38 @@
 ---
-title: "Week 4 Worklog"
-date: 2024-01-01
-weight: 1
+title: "Worklog week 4"
+weight: 4
 chapter: false
-pre: " <b> 1.4. </b> "
+pre: " <b>1.4 </b> "
 ---
-{{% notice warning %}} 
-⚠️ **Note:** The following information is for reference purposes only. Please **do not copy verbatim** for your own report, including this warning.
-{{% /notice %}}
 
+#  EC2 basics, server connection, and demo application deployment
 
-### Week 4 Objectives:
+**Time:** 04/05/2026 - 10/05/2026
 
-* Connect and get acquainted with members of First Cloud AI Journey.
-* Understand basic AWS services, how to use the console & CLI.
+## Week 4 objectives
 
-### Tasks to be carried out this week:
-| Day | Task                                                                                                                                                                                                   | Start Date | Completion Date | Reference Material                        |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ----------------------------------------- |
-| 2   | - Get acquainted with FCAJ members <br> - Read and take note of internship unit rules and regulations                                                                                                   | 08/11/2025 | 08/11/2025      |
-| 3   | - Learn about AWS and its types of services <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                              | 08/12/2025 | 08/12/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Create AWS Free Tier account <br> - Learn about AWS Console & AWS CLI <br> - **Practice:** <br>&emsp; + Create AWS account <br>&emsp; + Install & configure AWS CLI <br> &emsp; + How to use AWS CLI | 08/13/2025 | 08/13/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Learn basic EC2: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - SSH connection methods to EC2 <br> - Learn about Elastic IP   <br>                            | 08/14/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Practice:** <br>&emsp; + Launch an EC2 instance <br>&emsp; + Connect via SSH <br>&emsp; + Attach an EBS volume                                                                                     | 08/15/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
+- Launch and operate a basic EC2 instance.
+- Connect to the server and deploy a simple demo service.
+- Record common troubleshooting steps for ports, keys, and security groups.
 
+---
 
-### Week 4 Achievements:
+## Tasks to complete this week
 
-* Understood what AWS is and mastered the basic service groups: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
+| Day | Task | Start date | Completion date | References |
+|---|---|---|---|---|
+| Mon | Study EC2 launch workflow, AMI, instance type, key pair, storage, and security group. | 04/05/2026 | 04/05/2026 | [Amazon EC2 Workshop](https://000004.awsstudygroup.com/)<br>[Amazon EC2 Documentation](https://docs.aws.amazon.com/ec2/) |
+| Tue | Launch a test instance and check status checks, public IP, private IP, and instance metadata basics. | 05/05/2026 | 05/05/2026 | [Amazon EC2 Workshop](https://000004.awsstudygroup.com/)<br>[Amazon EC2 Documentation](https://docs.aws.amazon.com/ec2/) |
+| Wed | Connect to the instance and install a simple web/application package for demonstration. | 06/05/2026 | 06/05/2026 | [Amazon EC2 Workshop](https://000004.awsstudygroup.com/)<br>[Amazon EC2 Documentation](https://docs.aws.amazon.com/ec2/) |
+| Thu | Troubleshoot blocked access caused by missing inbound rules, wrong port, or incorrect key/user. | 07/05/2026 | 07/05/2026 | [Amazon EC2 Workshop](https://000004.awsstudygroup.com/)<br>[Amazon EC2 Documentation](https://docs.aws.amazon.com/ec2/)<br>[Amazon VPC Workshop](https://000003.awsstudygroup.com/)<br>[Amazon VPC Documentation](https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html) |
+| Fri-Sun | Document EC2 screenshots and cleanup steps for future workshop pages. | 08/05/2026 | 10/05/2026 | [AWS Study Group Cloud Journey](https://cloudjourney.awsstudygroup.com/)<br>[AWS Budgets Documentation](https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html)<br>[AWS Cost Management](https://docs.aws.amazon.com/cost-management/) |
 
-* Successfully created and configured an AWS Free Tier account.
+---
 
-* Became familiar with the AWS Management Console and learned how to find, access, and use services via the web interface.
+## Week 4 outcomes
 
-* Installed and configured AWS CLI on the computer, including:
-  * Access Key
-  * Secret Key
-  * Default Region
-  * ...
+- Gained hands-on EC2 deployment experience.
+- Understood how security groups affect application reachability.
+- Prepared reusable troubleshooting and cleanup notes for workshop documentation.
 
-* Used AWS CLI to perform basic operations such as:
-
-  * Check account & configuration information
-  * Retrieve the list of regions
-  * View EC2 service
-  * Create and manage key pairs
-  * Check information about running services
-  * ...
-
-* Acquired the ability to connect between the web interface and CLI to manage AWS resources in parallel.
-* ...
+---

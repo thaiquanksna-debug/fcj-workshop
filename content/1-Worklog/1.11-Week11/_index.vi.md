@@ -1,59 +1,41 @@
 ---
-title: "Worklog Tuần 11"
-date: 2024-01-01
-weight: 2
+title: "Worklog tuần 11"
+weight: 11
 chapter: false
-pre: " <b> 1.11. </b> "
+pre: " <b>1.11 </b> "
 ---
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
+
+# Lên kế hoạch và hoàn thiện proposal
+
+**Thời gian:** 22/06/2026 - 28/06/2026
+
+## Mục tiêu tuần 11
+
+- Chốt lại vấn đề nghiệp vụ và phạm vi giải pháp cho project cuối kỳ.
+- Hoàn thiện proposal theo các mục: problem statement, solution architecture, technical implementation, timeline, budget, risk, expected outcomes.
+- Đối chiếu proposal với nguyên tắc bảo mật, vận hành, độ tin cậy và tối ưu chi phí của AWS Well-Architected Framework.
+- Phân chia nhiệm vụ triển khai tuần cuối để hai thành viên làm thống nhất.
+
+---
+
+## Các công việc cần triển khai trong tuần này
+
+| Thứ | Công việc | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu |
+|---|---|---|---|---|
+| 2 | - Rà soát yêu cầu công ty và xác định project theo hướng private-by-default internal workload<br>- Viết lại problem statement để nhấn mạnh rủi ro public exposure, SSH/RDP mở ra Internet, database public và thiếu evidence sau triển khai | 22/06/2026 | 22/06/2026 | [AWS Well-Architected Framework](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html)<br>[Security Pillar](https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/welcome.html)<br>[AWS Study Group](https://cloudjourney.awsstudygroup.com/vi/) |
+| 3 | - Hoàn thiện kiến trúc giải pháp: VPC private subnet, EC2 worker, RDS private, VPC Endpoint, SQS, EventBridge, CloudWatch Logs/Metrics/Alarms, SNS và S3 evidence<br>- Ghi rõ vì sao workload không cần public URL và không cần public ALB | 23/06/2026 | 23/06/2026 | [Amazon VPC Docs](https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html)<br>[EC2 Docs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html)<br>[RDS Docs](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html) |
+| 4 | - Viết phần technical implementation: Terraform modules, IAM role, security group, parameter store, log/evidence flow<br>- Bổ sung phần kiểm soát chi phí và dọn dẹp tài nguyên sau demo | 24/06/2026 | 24/06/2026 | [CloudFormation/IaC reference](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html)<br>[AWS Budgets Workshop](https://000007.awsstudygroup.com/vi/)<br>[CloudWatch Docs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html) |
+| 5 | - Hoàn thiện timeline, milestone, ngân sách dự kiến và rủi ro kỹ thuật<br>- Kiểm tra nội dung proposal trên site Hugo, sửa tiêu đề, thứ tự mục và liên kết nội bộ | 25/06/2026 | 25/06/2026 | [AWS Well-Architected Framework](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html)<br>[AWS Documentation](https://docs.aws.amazon.com/) |
+| 6-CN | - Review chéo proposal giữa hai thành viên<br>- Chốt phạm vi triển khai tuần cuối: diagram, Terraform deploy, evidence capture, video/demo flow và checklist dọn dẹp | 26/06/2026 | 28/06/2026 | [CloudWatch Workshop](https://000008.awsstudygroup.com/vi/)<br>[AWS Study Group Cloud Journey](https://cloudjourney.awsstudygroup.com/vi/) |
+
+---
+
+## Kết quả đạt được tuần 11
+
+- Hoàn thiện proposal theo cấu trúc website workshop, có đủ vấn đề, giải pháp, kiến trúc, triển khai, timeline, ngân sách, rủi ro và kết quả mong đợi.
+- Thống nhất project cuối kỳ là mô hình triển khai internal worker trên AWS theo hướng private-by-default, có evidence để chứng minh triển khai đúng.
+- Xác định rõ vai trò của từng dịch vụ trong business/action flow: EventBridge kích hoạt job, SQS giữ hàng đợi, EC2 worker xử lý, RDS lưu trạng thái, CloudWatch/S3 lưu bằng chứng.
+- Chuẩn bị backlog cho tuần cuối gồm sửa diagram, triển khai hạ tầng, test luồng chạy, thu thập log/metric/alarm và hoàn thiện tài liệu nộp.
 
 
-### Mục tiêu tuần 11:
-
-* Kết nối, làm quen với các thành viên trong First Cloud AI Journey.
-* Hiểu dịch vụ AWS cơ bản, cách dùng console & CLI.
-
-### Các công việc cần triển khai trong tuần này:
-| Thứ | Công việc                                                                                                                                                                                   | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu                            |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | --------------- | ----------------------------------------- |
-| 2   | - Làm quen với các thành viên FCAJ <br> - Đọc và lưu ý các nội quy, quy định tại đơn vị thực tập                                                                                             | 11/08/2025   | 11/08/2025      |
-| 3   | - Tìm hiểu AWS và các loại dịch vụ <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                            | 12/08/2025   | 12/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Tạo AWS Free Tier account <br> - Tìm hiểu AWS Console & AWS CLI <br> - **Thực hành:** <br>&emsp; + Tạo AWS account <br>&emsp; + Cài AWS CLI & cấu hình <br> &emsp; + Cách sử dụng AWS CLI | 13/08/2025   | 13/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Tìm hiểu EC2 cơ bản: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - Các cách remote SSH vào EC2 <br> - Tìm hiểu Elastic IP   <br>                  | 14/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Thực hành:** <br>&emsp; + Tạo EC2 instance <br>&emsp; + Kết nối SSH <br>&emsp; + Gắn EBS volume                                                                                         | 15/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-
-
-### Kết quả đạt được tuần 11:
-
-* Hiểu AWS là gì và nắm được các nhóm dịch vụ cơ bản: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
-
-* Đã tạo và cấu hình AWS Free Tier account thành công.
-
-* Làm quen với AWS Management Console và biết cách tìm, truy cập, sử dụng dịch vụ từ giao diện web.
-
-* Cài đặt và cấu hình AWS CLI trên máy tính bao gồm:
-  * Access Key
-  * Secret Key
-  * Region mặc định
-  * ...
-
-* Sử dụng AWS CLI để thực hiện các thao tác cơ bản như:
-
-  * Kiểm tra thông tin tài khoản & cấu hình
-  * Lấy danh sách region
-  * Xem dịch vụ EC2
-  * Tạo và quản lý key pair
-  * Kiểm tra thông tin dịch vụ đang chạy
-  * ...
-
-* Có khả năng kết nối giữa giao diện web và CLI để quản lý tài nguyên AWS song song.
-* ...
-
-
+---

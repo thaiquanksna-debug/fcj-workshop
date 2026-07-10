@@ -1,58 +1,39 @@
 ---
-title: "Worklog Tuần 6"
-date: 2024-01-01
-weight: 1
+title: "Worklog tuần 6"
+weight: 6
 chapter: false
-pre: " <b> 1.6. </b> "
+pre: " <b>1.6 </b> "
 ---
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
+
+#  RDS và tích hợp database cho ứng dụng
+
+**Thời gian:** 18/05/2026 - 24/05/2026
+
+## Mục tiêu tuần 6
+
+- Thực hành tạo RDS và kết nối từ EC2/application layer.
+- Hiểu backup, snapshot, endpoint và DB subnet group.
+- Ghi chú các yêu cầu bảo mật database trong project.
+
+---
+
+## Các công việc cần triển khai trong tuần này
+
+| Thứ | Công việc | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu |
+|---|---|---|---|---|
+| 2 | - Học RDS, DB instance, engine, subnet group, parameter group và backup window<br>- So sánh RDS với database cài trên EC2 | 18/05/2026 | 18/05/2026 | [RDS Workshop](https://000005.awsstudygroup.com/vi/)<br>[RDS Docs](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html) |
+| 3 | - Tạo DB subnet group và RDS trong private subnet<br>- Cấu hình security group cho EC2 kết nối DB | 19/05/2026 | 19/05/2026 | [RDS Workshop](https://000005.awsstudygroup.com/vi/)<br>[Security Group Docs](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html) |
+| 4 | - Kết nối database từ EC2/app và tạo dữ liệu kiểm thử<br>- Kiểm tra endpoint, port, username/password và lỗi network | 20/05/2026 | 20/05/2026 | [RDS Getting Started](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html) |
+| 5 | - Thực hành backup/snapshot và quan sát trạng thái monitoring của RDS<br>- Ghi chú bằng chứng cần chụp khi demo database | 21/05/2026 | 21/05/2026 | [RDS Backup Lab](https://000005.awsstudygroup.com/vi/)<br>[CloudWatch Docs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html) |
+| 6-CN | - Tổng hợp yêu cầu DB cho project: private, không public, chỉ worker truy cập, có evidence record<br>- Cleanup RDS để tránh chi phí | 22/05/2026 | 24/05/2026 | [RDS Cleanup Lab](https://000005.awsstudygroup.com/vi/)<br>[AWS Budgets Workshop](https://000007.awsstudygroup.com/vi/) |
+
+---
+
+## Kết quả đạt được tuần 6
+
+- Tạo và kết nối được RDS trong lab.
+- Hiểu cách database managed service giảm phần vận hành so với tự quản trị DB server.
+- Chuẩn bị được checklist evidence cho RDS: endpoint private, security group, record được ghi từ worker và trạng thái resource.
 
 
-### Mục tiêu tuần 6:
-
-* Kết nối, làm quen với các thành viên trong First Cloud AI Journey.
-* Hiểu dịch vụ AWS cơ bản, cách dùng console & CLI.
-
-### Các công việc cần triển khai trong tuần này:
-| Thứ | Công việc                                                                                                                                                                                   | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu                            |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | --------------- | ----------------------------------------- |
-| 2   | - Làm quen với các thành viên FCAJ <br> - Đọc và lưu ý các nội quy, quy định tại đơn vị thực tập                                                                                             | 11/08/2025   | 11/08/2025      |
-| 3   | - Tìm hiểu AWS và các loại dịch vụ <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                            | 12/08/2025   | 12/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Tạo AWS Free Tier account <br> - Tìm hiểu AWS Console & AWS CLI <br> - **Thực hành:** <br>&emsp; + Tạo AWS account <br>&emsp; + Cài AWS CLI & cấu hình <br> &emsp; + Cách sử dụng AWS CLI | 13/08/2025   | 13/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Tìm hiểu EC2 cơ bản: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - Các cách remote SSH vào EC2 <br> - Tìm hiểu Elastic IP   <br>                  | 14/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Thực hành:** <br>&emsp; + Tạo EC2 instance <br>&emsp; + Kết nối SSH <br>&emsp; + Gắn EBS volume                                                                                         | 15/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-
-
-### Kết quả đạt được tuần 6:
-* Hiểu AWS là gì và nắm được các nhóm dịch vụ cơ bản: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
-
-* Đã tạo và cấu hình AWS Free Tier account thành công.
-
-* Làm quen với AWS Management Console và biết cách tìm, truy cập, sử dụng dịch vụ từ giao diện web.
-
-* Cài đặt và cấu hình AWS CLI trên máy tính bao gồm:
-  * Access Key
-  * Secret Key
-  * Region mặc định
-  * ...
-
-* Sử dụng AWS CLI để thực hiện các thao tác cơ bản như:
-
-  * Kiểm tra thông tin tài khoản & cấu hình
-  * Lấy danh sách region
-  * Xem dịch vụ EC2
-  * Tạo và quản lý key pair
-  * Kiểm tra thông tin dịch vụ đang chạy
-  * ...
-
-* Có khả năng kết nối giữa giao diện web và CLI để quản lý tài nguyên AWS song song.
-* ...
-
-
+---

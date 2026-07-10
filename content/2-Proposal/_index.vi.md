@@ -71,7 +71,7 @@ Với mức chi phí ước tính khoảng 85–95 USD/tháng nếu chạy 24/7,
 
 ### 3. Kiến trúc giải pháp
 
-![Secure Internal Job Processing Platform Architecture](/images/2-Proposal/secure-internal-job-processing-architecture.png)
+![Secure Internal Job Processing Platform Architecture](/fcj-workshop/images/2-Proposal/private-by-default/architecture.png)
 
 **Hình:** Kiến trúc tổng quan của Secure Internal Job Processing Platform on AWS.
 

@@ -1,57 +1,38 @@
 ---
-title: "Week 2 Worklog"
-date: 2024-01-01
-weight: 1
+title: "Worklog week 2"
+weight: 2
 chapter: false
-pre: " <b> 1.2. </b> "
+pre: " <b>1.2 </b> "
 ---
-{{% notice warning %}} 
-⚠️ **Note:** The following information is for reference purposes only. Please **do not copy verbatim** for your own report, including this warning.
-{{% /notice %}}
 
+# AWS Free Tier, Billing, Budgets, and cost governance
 
-### Week 2 Objectives:
+**Time:** 20/04/2026 - 26/04/2026
 
-* Connect and get acquainted with members of First Cloud AI Journey.
-* Understand basic AWS services, how to use the console & CLI.
+## Week 2 objectives
 
-### Tasks to be carried out this week:
-| Day | Task                                                                                                                                                                                                   | Start Date | Completion Date | Reference Material                        |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ----------------------------------------- |
-| 2   | - Get acquainted with FCAJ members <br> - Read and take note of internship unit rules and regulations                                                                                                   | 08/11/2025 | 08/11/2025      |
-| 3   | - Learn about AWS and its types of services <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                              | 08/12/2025 | 08/12/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Create AWS Free Tier account <br> - Learn about AWS Console & AWS CLI <br> - **Practice:** <br>&emsp; + Create AWS account <br>&emsp; + Install & configure AWS CLI <br> &emsp; + How to use AWS CLI | 08/13/2025 | 08/13/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Learn basic EC2: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - SSH connection methods to EC2 <br> - Learn about Elastic IP   <br>                            | 08/14/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Practice:** <br>&emsp; + Launch an EC2 instance <br>&emsp; + Connect via SSH <br>&emsp; + Attach an EBS volume                                                                                     | 08/15/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
+- Understand Free Tier limits and common cost risks in AWS labs.
+- Practice billing and budget monitoring from an operations perspective.
+- Build cleanup discipline before running larger services.
 
+---
 
-### Week 2 Achievements:
+## Tasks to complete this week
 
-* Understood what AWS is and mastered the basic service groups: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
+| Day | Task | Start date | Completion date | References |
+|---|---|---|---|---|
+| Mon | Study Free Tier scope, service limits, and differences between free usage and paid usage. | 20/04/2026 | 20/04/2026 | [AWS Free Tier Workshop](https://000001.awsstudygroup.com/) <br>[AWS Budgets Documentation](https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html)<br>[AWS Cost Management](https://docs.aws.amazon.com/cost-management/) |
+| Tue | Review Billing Dashboard, cost explorer concepts, and budget alert workflow. | 21/04/2026 | 21/04/2026 | [AWS Budgets Documentation](https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html)<br>[AWS Cost Management](https://docs.aws.amazon.com/cost-management/) |
+| Wed | List services that often remain billable after labs: EBS, Elastic IP, NAT Gateway, RDS, snapshots, and logs. | 22/04/2026 | 22/04/2026 | [AWS Budgets Documentation](https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html)<br>[AWS Cost Management](https://docs.aws.amazon.com/cost-management/)<br>[AWS Documentation](https://docs.aws.amazon.com/) |
+| Thu | Create a practical cleanup checklist for each lab session. | 23/04/2026 | 23/04/2026 | [AWS Free Tier Workshop](https://000001.awsstudygroup.com/) <br>[AWS Budgets Documentation](https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html)<br>[AWS Cost Management](https://docs.aws.amazon.com/cost-management/) |
+| Fri-Sun | Summarize cost-control rules for the workshop and final project deployment. | 24/04/2026 | 26/04/2026 | [AWS Well-Architected Framework](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html)<br>[AWS Budgets Documentation](https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html)<br>[AWS Cost Management](https://docs.aws.amazon.com/cost-management/) |
 
-* Successfully created and configured an AWS Free Tier account.
+---
 
-* Became familiar with the AWS Management Console and learned how to find, access, and use services via the web interface.
+## Week 2 outcomes
 
-* Installed and configured AWS CLI on the computer, including:
-  * Access Key
-  * Secret Key
-  * Default Region
-  * ...
+- Understood why cost control is a required part of AWS lab work.
+- Prepared a cleanup checklist to avoid unnecessary charges.
+- Defined budget awareness as one evidence item for the final project.
 
-* Used AWS CLI to perform basic operations such as:
-
-  * Check account & configuration information
-  * Retrieve the list of regions
-  * View EC2 service
-  * Create and manage key pairs
-  * Check information about running services
-  * ...
-
-* Acquired the ability to connect between the web interface and CLI to manage AWS resources in parallel.
-* ...
+---

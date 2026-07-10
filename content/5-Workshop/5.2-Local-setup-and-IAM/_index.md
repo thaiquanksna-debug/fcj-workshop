@@ -58,38 +58,38 @@ Open AWS Console with an administrator account.
 
 1. Search for **IAM Identity Center**.
 2. Open **IAM Identity Center**.
-![Photo](/images/5-Workshop/private-by-default/screen21.png)
+![Photo](/fcj-workshop/images/5-Workshop/private-by-default/screen21.png)
 
 3. If IAM Identity Center is not enabled, click **Enable**.
-![Photo](/images/5-Workshop/private-by-default/screen2,2.jpg)
-![Photo](/images/5-Workshop/private-by-default/screen2,3.jpg)
+![Photo](/fcj-workshop/images/5-Workshop/private-by-default/screen2,2.jpg)
+![Photo](/fcj-workshop/images/5-Workshop/private-by-default/screen2,3.jpg)
 
 4. Go to **Users**.
 5. Click **Add user**.
-![Photo](/images/5-Workshop/private-by-default/screen2,4.jpg)
+![Photo](/fcj-workshop/images/5-Workshop/private-by-default/screen2,4.jpg)
 6. User name: `mvp-builder`.
 7. Email: use the email that will sign in to AWS.
 8. Complete the user creation.
-![Photo](/images/5-Workshop/private-by-default/screen2,5.jpg)
+![Photo](/fcj-workshop/images/5-Workshop/private-by-default/screen2,5.jpg)
 
 # 3. Create the permission set
 
 1. In **IAM Identity Center**, go to **Permission sets**.
-![Photo](/images/5-Workshop/private-by-default/screen2,6.png)
+![Photo](/fcj-workshop/images/5-Workshop/private-by-default/screen2,6.png)
 
 2. Click **Create permission set**.
-![Photo](/images/5-Workshop/private-by-default/screen2,7.png)
+![Photo](/fcj-workshop/images/5-Workshop/private-by-default/screen2,7.png)
 
 3. Choose **Custom permission set**.
-![Photo](/images/5-Workshop/private-by-default/screen2,8.jpg)
+![Photo](/fcj-workshop/images/5-Workshop/private-by-default/screen2,8.jpg)
 4. Permission set name: `PrivateWorkloadTerraformOperator`.
 5. Session duration: choose 4 hours or 8 hours.
 6. Create the permission set.
-![Photo](/images/5-Workshop/private-by-default/screen2,9.png)
+![Photo](/fcj-workshop/images/5-Workshop/private-by-default/screen2,9.png)
 7. Open `PrivateWorkloadTerraformOperator`.
 8. Go to **Permissions Set and click MVPTerraformOperator**.
 9. Click **Add inline policy** or **Edit inline policy**.
-![Photo](/images/5-Workshop/private-by-default/screen2,10.jpg)
+![Photo](/fcj-workshop/images/5-Workshop/private-by-default/screen2,10.jpg)
 
 10. Choose the **JSON** tab.
 11. Delete any existing placeholder JSON.
@@ -515,7 +515,7 @@ Full inline policy:
 ~~~
 
 13. Create or Save changes.
-![Photo](/images/5-Workshop/private-by-default/screen2,11.jpg)
+![Photo](/fcj-workshop/images/5-Workshop/private-by-default/screen2,11.jpg)
 
 
 
@@ -524,14 +524,14 @@ Full inline policy:
 1. In **IAM Identity Center**, go to **AWS accounts**.
 2. Select the target AWS account.
 3. Click **Assign users or groups**.
-![Photo](/images/5-Workshop/private-by-default/screen4,1.png)
+![Photo](/fcj-workshop/images/5-Workshop/private-by-default/screen4,1.png)
 
 4. Select user `mvp-builder`.
 ![Photo](images/5-Workshop/private-by-default/screen4,2.png)
 5. Select permission set `PrivateWorkloadTerraformOperator`.
-![Photo](/images/5-Workshop/private-by-default/screen4,3.png)
+![Photo](/fcj-workshop/images/5-Workshop/private-by-default/screen4,3.png)
 6. Submit the assignment.
-![Photo](/images/5-Workshop/private-by-default/screen4,4.png)
+![Photo](/fcj-workshop/images/5-Workshop/private-by-default/screen4,4.png)
 
 # 5. Configure the AWS CLI SSO profile
 

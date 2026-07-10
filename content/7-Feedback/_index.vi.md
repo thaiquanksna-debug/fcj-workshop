@@ -1,44 +1,76 @@
 ---
-title: "Chia sẻ, đóng góp ý kiến"
-date: 2024-01-01
+title: "Đánh giá và Đề xuất"
+date: 2026-07-04
 weight: 7
 chapter: false
 pre: " <b> 7. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
 
->Tại đây bạn có thể tự do đóng góp ý kiến cá nhân về những trải nghiệm khi tham gia chương trình First Cloud AI Journey, giúp team FCAJ cải thiện những vấn đề còn thiếu sót dựa trên các hạng mục sau:
+# Đánh giá và Đề xuất
 
-### Đánh giá chung
+## Đánh giá chung
 
-**1. Môi trường làm việc**  
-Môi trường làm việc rất thân thiện và cởi mở. Các thành viên trong FCAJ luôn sẵn sàng hỗ trợ khi mình gặp khó khăn, kể cả ngoài giờ làm việc. Không gian làm việc gọn gàng, thoải mái, giúp mình tập trung tốt hơn. Tuy nhiên, mình nghĩ có thể bổ sung thêm một số buổi giao lưu hoặc team bonding để mọi người hiểu nhau hơn.
+### 1. Môi trường làm việc
 
-**2. Sự hỗ trợ của mentor / team admin**  
-Mentor hướng dẫn rất chi tiết, giải thích rõ ràng khi mình chưa hiểu và luôn khuyến khích mình đặt câu hỏi. Team admin hỗ trợ các thủ tục, tài liệu và tạo điều kiện để mình làm việc thuận lợi. Mình đánh giá cao việc mentor cho phép mình thử và tự xử lý vấn đề thay vì chỉ đưa đáp án.
+Dự án được thực hiện trong một môi trường có tổ chức và định hướng rõ ràng. Các mục tiêu và mốc công việc được xác định cụ thể, giúp quá trình triển khai diễn ra thuận lợi. Môi trường làm việc khuyến khích khả năng tự học, tự nghiên cứu đồng thời vẫn đảm bảo có sự hỗ trợ khi cần thiết.
 
-**3. Sự phù hợp giữa công việc và chuyên ngành học**  
-Công việc mình được giao phù hợp với kiến thức mình đã học ở trường, đồng thời mở rộng thêm những mảng mới mà mình chưa từng được tiếp cận. Nhờ vậy, mình vừa củng cố kiến thức nền tảng, vừa học thêm kỹ năng thực tế.
+### 2. Sự hỗ trợ và hướng dẫn
 
-**4. Cơ hội học hỏi & phát triển kỹ năng**  
-Trong quá trình thực tập, mình học được nhiều kỹ năng mới như sử dụng công cụ quản lý dự án, kỹ năng làm việc nhóm, và cả cách giao tiếp chuyên nghiệp trong môi trường công ty. Mentor cũng chia sẻ nhiều kinh nghiệm thực tế giúp mình định hướng tốt hơn cho sự nghiệp.
+Trong quá trình thực hiện dự án, tôi nhận được nhiều sự hướng dẫn hữu ích về mặt kỹ thuật. Những góp ý và trao đổi chuyên môn đã giúp tôi hiểu rõ hơn về kiến trúc đám mây, tự động hóa hạ tầng và các nguyên tắc bảo mật trên AWS.
 
-**5. Văn hóa & tinh thần đồng đội**  
-Văn hóa công ty rất tích cực: mọi người tôn trọng lẫn nhau, làm việc nghiêm túc nhưng vẫn vui vẻ. Khi có dự án gấp, mọi người cùng nhau cố gắng, hỗ trợ không phân biệt vị trí. Điều này giúp mình cảm thấy mình là một phần của tập thể, dù chỉ là thực tập sinh.
+### 3. Mức độ liên quan đến chuyên ngành
 
-**6. Chính sách / phúc lợi cho thực tập sinh**  
-Công ty có hỗ trợ phụ cấp thực tập và tạo điều kiện về thời gian linh hoạt khi cần thiết. Ngoài ra, việc được tham gia các buổi đào tạo nội bộ là một điểm cộng lớn.
+Nội dung dự án có sự liên kết chặt chẽ với chương trình đào tạo Công nghệ Thông tin. Dự án tạo điều kiện để tôi vận dụng kiến thức về mạng máy tính, hệ điều hành, cơ sở dữ liệu, điện toán đám mây và an toàn thông tin vào một tình huống thực tế.
 
+### 4. Cơ hội học tập và phát triển
 
-### Một số câu hỏi khác
-- Điều bạn **hài lòng nhất** trong thời gian thực tập?  
-- Điều bạn nghĩ công ty **cần cải thiện** cho các thực tập sinh sau?  
-- Nếu giới thiệu cho bạn bè, bạn có **khuyên họ thực tập ở đây không**? Vì sao?  
+Đây là cơ hội quý giá để tôi tiếp cận và thực hành với các công nghệ hiện đại trong lĩnh vực điện toán đám mây.
 
+Thông qua dự án, tôi đã có cơ hội tìm hiểu và áp dụng:
 
-### Đề xuất & mong muốn
-- Bạn có đề xuất gì để cải thiện trải nghiệm trong kỳ thực tập?  
-- Bạn có muốn tiếp tục chương trình này trong tương lai?
-- Góp ý khác (tự do chia sẻ):
+- Amazon Web Services (AWS)
+- Terraform Infrastructure as Code
+- Amazon VPC
+- Amazon RDS PostgreSQL
+- AWS KMS
+- AWS CloudTrail
+- AWS CloudWatch
+- Open Policy Agent (OPA)
+- Rego Policy
+- Thiết kế kiến trúc đám mây bảo mật
+
+Bên cạnh đó, kỹ năng xử lý sự cố, lập kế hoạch hạ tầng và viết tài liệu kỹ thuật của tôi cũng được cải thiện đáng kể.
+
+### 5. Kỹ năng giao tiếp và phối hợp
+
+Mặc dù phần lớn công việc được thực hiện độc lập, tôi vẫn có cơ hội trao đổi các vấn đề kỹ thuật, trình bày phương án thiết kế và báo cáo tiến độ thực hiện. Điều này giúp nâng cao khả năng giao tiếp và trình bày các nội dung kỹ thuật một cách rõ ràng hơn.
+
+### 6. Tổ chức và quản lý dự án
+
+Dự án được chia thành các giai đoạn với mục tiêu cụ thể cho từng mốc công việc. Cách tổ chức này giúp quá trình triển khai dễ theo dõi hơn và đảm bảo các yêu cầu về hạ tầng cũng như bảo mật được hoàn thành đúng kế hoạch.
+
+---
+
+## Các câu hỏi bổ sung
+
+### Điều giá trị nhất mà bạn học được là gì?
+
+Điều giá trị nhất là hiểu được cách xây dựng hệ thống với tư duy bảo mật ngay từ giai đoạn thiết kế. Việc triển khai mô hình Private-by-Default giúp tôi có cái nhìn thực tế hơn về các yêu cầu bảo mật trong môi trường đám mây.
+
+### Khó khăn lớn nhất trong quá trình thực hiện là gì?
+
+Khó khăn lớn nhất là đảm bảo toàn bộ hệ thống hoạt động trong môi trường riêng tư nhưng vẫn duy trì được khả năng kết nối giữa các thành phần. Điều này đòi hỏi phải cấu hình cẩn thận về mạng, quyền truy cập, mã hóa dữ liệu và kiểm soát chính sách.
+
+### Kỹ năng nào được cải thiện nhiều nhất?
+
+Terraform và thiết kế kiến trúc AWS là hai lĩnh vực tôi tiến bộ nhiều nhất. Tôi tự tin hơn trong việc quản lý hạ tầng bằng mã nguồn và triển khai các giải pháp đám mây theo hướng bảo mật.
+
+---
+
+## Đề xuất và Kỳ vọng
+
+Nhìn chung, dự án đã mang lại nhiều kinh nghiệm thực tế và giúp tôi tiếp cận quy trình triển khai hạ tầng đám mây theo tiêu chuẩn hiện đại.
+
+Trong tương lai, có thể bổ sung thêm các hoạt động như đánh giá kiến trúc hệ thống, kiểm tra bảo mật hoặc tích hợp các dịch vụ AWS nâng cao để tăng thêm giá trị học tập cho sinh viên.
+
+Tôi xin cảm ơn những sự hỗ trợ và hướng dẫn trong suốt quá trình thực hiện dự án. Tôi tin rằng các dự án thực hành tương tự sẽ tiếp tục mang lại nhiều lợi ích cho các khóa sinh viên tiếp theo.

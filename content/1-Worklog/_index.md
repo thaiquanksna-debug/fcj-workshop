@@ -1,39 +1,27 @@
 ---
 title: "Worklog"
-date: 2024-01-01
 weight: 1
-chapter: false
-pre: " <b> 1. </b> "
+chapter: true
+pre: "<b>1. </b>"
 ---
 
-{{% notice warning %}}
-⚠️ **Note:** The information below is for reference purposes only. Please **do not copy verbatim** for your report, including this warning.
-{{% /notice %}}
+# Worklog
 
-**On this page**, you will need to introduce your worklog. **How** did you complete it? How many weeks did you take to complete the program? **What** did you do in those weeks?
+This page summarizes the 12-week internship worklog for student 2, from **17/04/2026** to **06/07/2026**.
 
-Typically, and as a standard, a worklog is carried out over about 3 months (throughout the internship period) with weekly contents as follows:
+The content is organized by week and follows the AWS Study Group lab roadmap, official AWS documentation, proposal completion, AWS diagram refinement, and final project implementation.
 
-**Week 1:** [Getting familiar with AWS and basic AWS services](1.1-week1/)
+## Worklog list
 
-**Week 2:** [Doing task A...](1.2-week2/)
-
-**Week 3:** [Doing task B...](1.3-week3/)
-
-**Week 4:** [Doing task C...](1.4-week4/)
-
-**Week 5:** [Doing task D...](1.5-week5/)
-
-**Week 6:** [Doing task E...](1.6-week6/)
-
-**Week 7:** [Doing task G...](1.7-week7/)
-
-**Week 8:** [Doing task H...](1.8-week8/)
-
-**Week 9:** [Doing task I...](1.9-week9/)
-
-**Week 10:** [Doing task L...](1.10-week10/)
-
-**Week 11:** [Doing task M...](1.11-week11/)
-
-**Week 12:** [Doing task N...](1.12-week12/)
+- [Worklog week 1](./1.1-Week1/): Internship environment, Hugo, and AWS Console orientation
+- [Worklog week 2](./1.2-Week2/): AWS Free Tier, Billing, Budgets, and cost governance
+- [Worklog week 3](./1.3-Week3/): IAM practice: users, groups, roles, and policies
+- [Worklog week 4](./1.4-Week4/): EC2 basics, server connection, and demo application deployment
+- [Worklog week 5](./1.5-Week5/): Advanced VPC practice for private workloads
+- [Worklog week 6](./1.6-Week6/): RDS and database integration for applications
+- [Worklog week 7](./1.7-Week7/): Auto Scaling Group, Launch Template, and health checks
+- [Worklog week 8](./1.8-Week8/): CloudWatch observability for operations
+- [Worklog week 9](./1.9-Week9/): Workshop documentation, blog translation, and source mapping
+- [Worklog week 10](./1.10-Week10/): Preparing technical content for the proposal and project
+- [Worklog week 11](./1.11-Week11/): Planning and finalizing the project proposal
+- [Worklog week 12](./1.12-Week12/): Finalizing the diagram, implementing the proposal, and deploying the project
