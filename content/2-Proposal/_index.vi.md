@@ -5,17 +5,16 @@ weight: 2
 chapter: false
 pre: " <b> 2. </b> "
 ---
+
 ## Nền tảng xử lý job nội bộ an toàn trên AWS
 
 ### 1. Tóm tắt điều hành
 
-Secure Internal Job Processing Platform on AWS là một hệ thống backend được thiết kế cho các doanh nghiệp cần xử lý các tác vụ dữ liệu nội bộ trong môi trường cloud an toàn, không expose worker hoặc database trực tiếp ra Internet.
+Secure Internal Job Processing Platform on AWS là nền tảng backend dành cho các tác vụ xử lý dữ liệu nội bộ cần được vận hành trong môi trường cloud riêng tư, có kiểm soát và có khả năng lưu vết. Hệ thống phù hợp với những workload như đối soát dữ liệu, kiểm tra file nghiệp vụ, xử lý batch logs, tạo bằng chứng audit hoặc thực hiện các tác vụ compliance định kỳ.
 
-Project không phải là một website public có giao diện người dùng, mà là một hệ thống xử lý job nội bộ đã được triển khai trên AWS. Hệ thống mô phỏng các workload như đối soát giao dịch, validate dữ liệu khách hàng, xử lý batch logs, tạo bằng chứng audit hoặc chạy các tác vụ compliance định kỳ.
+Project không phải là website public và không tiếp nhận công việc qua public API. Job được tạo theo lịch, đưa vào hàng đợi và được EC2 Worker chủ động lấy về xử lý. Worker và database không được expose trực tiếp ra Internet; việc truy cập các dịch vụ AWS cần thiết được thực hiện qua lớp VPC Endpoints.
 
-Kiến trúc sử dụng Amazon VPC để cô lập mạng, Amazon EC2 làm worker xử lý job, Amazon RDS PostgreSQL làm tầng database, Amazon SQS làm hàng đợi bất đồng bộ, Amazon EventBridge để tạo job định kỳ, Amazon CloudWatch và Amazon SNS để giám sát/cảnh báo, Amazon S3 để lưu trữ dữ liệu/log/evidence, cùng các dịch vụ bảo mật và governance như IAM, KMS, AWS Config, CloudTrail và Systems Manager.
-
-Hệ thống được thiết kế và triển khai theo mô hình tối ưu hóa chi phí (FinOps) với một EC2 Worker và một Amazon RDS PostgreSQL cấu hình Single-AZ. Kiến trúc này không chỉ phản ánh chính xác hạ tầng thực tế được khởi tạo, mà vẫn đảm bảo toàn vẹn các mục tiêu chiến lược bao gồm: mạng nội bộ cô lập (private networking), xử lý bất đồng bộ qua hàng đợi (queue-based processing), giám sát và cảnh báo chủ động (monitoring & alerting), lưu vết kiểm toán (audit evidence), và quản lý tự động hóa hoàn toàn bằng mã nguồn (Infrastructure as Code).
+Kiến trúc được triển khai theo mô hình Lean MVP nhằm cân bằng giữa bảo mật, khả năng kiểm chứng và chi phí. Hệ thống sử dụng một EC2 Worker và một RDS PostgreSQL Single-AZ, đồng thời dùng SQS để tách rời khâu tạo job khỏi khâu xử lý. Toàn bộ hạ tầng được quản lý bằng Terraform và được kiểm tra bằng OPA/Rego trước khi triển khai.
 
 ---
 
@@ -23,66 +22,52 @@ Hệ thống được thiết kế và triển khai theo mô hình tối ưu hó
 
 #### Vấn đề hiện tại
 
-Nhiều doanh nghiệp có các tác vụ xử lý dữ liệu nội bộ không phù hợp để expose ra Internet, ví dụ:
+Nhiều doanh nghiệp có các tác vụ nội bộ không phù hợp để triển khai như một dịch vụ public, ví dụ:
 
-- đối soát dữ liệu giao dịch;
-- validate file CSV khách hàng;
+- đối soát hoặc kiểm tra dữ liệu giao dịch;
+- xác thực file dữ liệu khách hàng;
 - xử lý logs nghiệp vụ;
-- tạo báo cáo kiểm toán;
-- chạy tác vụ compliance định kỳ;
-- đồng bộ hoặc kiểm tra dữ liệu giữa các hệ thống nội bộ.
+- tạo báo cáo và bằng chứng kiểm toán;
+- chạy các tác vụ compliance theo lịch;
+- đồng bộ hoặc kiểm tra dữ liệu giữa các hệ thống.
 
-Nếu các workload này được triển khai thủ công hoặc đặt trong môi trường public quá dễ dãi, hệ thống có thể gặp các rủi ro sau:
-
-- EC2 hoặc database bị expose ra Internet;
-- thiếu cơ chế queue để giữ job khi worker lỗi;
-- khó retry hoặc điều tra failed jobs;
-- thiếu alert khi hệ thống bất thường;
-- thiếu audit evidence để chứng minh cấu hình bảo mật;
-- thao tác hạ tầng thủ công gây drift và khó tái triển khai;
-- chi phí cloud khó kiểm soát nếu dùng NAT Gateway hoặc tài nguyên dư thừa.
-
-Vấn đề chính của project là: **làm thế nào để biến các yêu cầu bảo mật cloud thành hạ tầng AWS thực tế, có thể triển khai, kiểm chứng và audit được.**
+Nếu các workload này được triển khai thủ công hoặc đặt trong môi trường public thiếu kiểm soát, doanh nghiệp có thể gặp các vấn đề như worker và database bị expose, job bị gián đoạn khi worker lỗi, thiếu cơ chế xử lý message thất bại, không có cảnh báo vận hành, thiếu audit evidence và khó kiểm soát cấu hình hạ tầng theo thời gian.
 
 #### Giải pháp đề xuất
 
-Project đề xuất một nền tảng xử lý job nội bộ trên AWS theo hướng private-first. Thay vì nhận request từ public HTTP API, hệ thống nhận công việc thông qua Amazon SQS. Amazon EventBridge tạo job định kỳ và gửi vào SQS. EC2 Worker nằm trong private subnet sẽ chủ động poll message từ SQS để xử lý. Khi cần lưu dữ liệu hoặc metadata, worker kết nối tới Amazon RDS PostgreSQL thông qua Security Group nội bộ.
+Project đề xuất một nền tảng xử lý job theo hướng private-first và queue-based. EventBridge Scheduler tạo job định kỳ và gửi vào Amazon SQS. EC2 Worker trong private subnet chủ động poll queue, xử lý job và kết nối tới RDS PostgreSQL khi cần lưu hoặc đọc dữ liệu.
 
-Nếu job xử lý thất bại nhiều lần, message được chuyển sang Dead Letter Queue để điều tra hoặc xử lý lại. CloudWatch theo dõi logs/metrics và kích hoạt alarm khi có bất thường. SNS gửi email cảnh báo cho Ops/Admin. CloudTrail, AWS Config, VPC Flow Logs và S3 hỗ trợ audit evidence sau triển khai.
+Nếu job thất bại nhiều lần, message được chuyển sang Dead Letter Queue để cô lập và điều tra. CloudWatch theo dõi trạng thái hệ thống; khi DLQ xuất hiện message, CloudWatch Alarm kích hoạt SNS để gửi thông báo cho Ops/Admin. CloudTrail, AWS Config, VPC Flow Logs và S3 tạo dữ liệu phục vụ giám sát, kiểm tra và audit.
 
-Toàn bộ hạ tầng được định nghĩa bằng Terraform. Trước khi triển khai, Terraform plan được kiểm tra bằng OPA/Rego policy gate để hạn chế các cấu hình không an toàn.
+#### Giá trị mang lại
 
-#### Lợi ích và giá trị
-
-Hệ thống mang lại các giá trị chính:
-
-- giảm rủi ro public exposure cho worker và database;
-- xử lý job bất đồng bộ bằng SQS;
-- giảm nguy cơ mất job khi worker tạm dừng hoặc lỗi;
-- hỗ trợ failure handling thông qua Dead Letter Queue;
-- có monitoring và alerting qua CloudWatch/SNS;
-- tạo audit evidence từ CloudTrail, AWS Config, VPC Flow Logs và S3;
-- kiểm soát hạ tầng bằng Terraform thay vì thao tác thủ công;
-- triển khai lab tiết kiệm chi phí nhưng vẫn có khả năng mở rộng bằng IaC.
-
-Với mức chi phí ước tính khoảng 85–95 USD/tháng nếu chạy 24/7, nền tảng này không chỉ là một demo AWS service riêng lẻ, mà là một baseline có thể tái sử dụng cho nhiều loại internal jobs cần private networking, monitoring, alerting và audit evidence.
+- hạn chế public exposure đối với worker và database;
+- tách rời producer và worker bằng hàng đợi bất đồng bộ;
+- giữ job khi worker tạm thời không hoạt động;
+- cô lập failed jobs bằng Dead Letter Queue;
+- hỗ trợ monitoring, alerting và audit evidence;
+- quản lý hạ tầng nhất quán bằng Infrastructure as Code;
+- kiểm tra các yêu cầu bảo mật trước khi triển khai;
+- tạo baseline có thể mở rộng khi nhu cầu vận hành tăng.
 
 ---
 
 ### 3. Kiến trúc giải pháp
 
-![Secure Internal Job Processing Platform Architecture](/fcj-workshop/images/2-Proposal/private-by-default/architecture.png)
+![Secure Internal Job Processing Platform Architecture](/fcj-workshop/images/2-Proposal/private-by-default/diagram.jpg)
 
 **Hình:** Kiến trúc tổng quan của Secure Internal Job Processing Platform on AWS.
 
-Kiến trúc triển khai thực tế trong lab gồm một EC2 Worker và một RDS PostgreSQL Single-AZ. Về mặt hạ tầng, hệ thống được triển khai theo mô hình tối giản (Lean Architecture) bao gồm một EC2 Worker và một Amazon RDS PostgreSQL cấu hình Single-AZ nhằm tối ưu hóa chi phí vận hành (FinOps) trong giai đoạn thử nghiệm (Pilot/Demo Deployment). Sơ đồ kiến trúc phản ánh chính xác 100% tài nguyên thực tế được khởi tạo.
+Kiến trúc được chia thành bốn vùng chức năng chính:
 
-Mặc dù vận hành trên cấu hình Single-AZ, hệ thống vẫn đảm bảo tính toàn vẹn của dữ liệu và khả năng mở rộng linh hoạt nhờ vào hai cơ chế cốt lõi sau:
+1. **External Deployment Controls:** Developer, Terraform Pipeline và OPA/Rego Policy Gate quản lý quá trình thay đổi hạ tầng.
+2. **Private Workload trong VPC:** EC2 Worker và RDS PostgreSQL được đặt trong các private subnet, không nhận truy cập trực tiếp từ Internet.
+3. **Job Processing & Operations:** EventBridge Scheduler, SQS, CloudWatch, SNS và Session Manager hỗ trợ tạo job, xử lý bất đồng bộ, cảnh báo và quản trị.
+4. **Security & Governance:** IAM, KMS, Parameter Store, CloudTrail, AWS Config, VPC Flow Logs và S3 hỗ trợ kiểm soát truy cập, bảo vệ dữ liệu và lưu bằng chứng audit.
 
-- **Decoupling bằng SQS:** EventBridge gửi job vào SQS, còn EC2 Worker chủ động poll job. Nếu worker tạm dừng hoặc restart, job chưa xử lý vẫn có thể được giữ trong SQS theo thời gian retention.
-- **Mở rộng bằng Terraform:** Hạ tầng được module hóa bằng Terraform. Khi cần nâng cấp, có thể bổ sung worker hoặc bật Multi-AZ cho RDS thông qua thay đổi cấu hình IaC thay vì thao tác thủ công trên AWS Console.
+RDS được triển khai theo cấu hình Single-AZ để phù hợp phạm vi MVP. Hai private DB subnet thuộc hai Availability Zone được sử dụng làm DB Subnet Group, nhưng hệ thống chỉ vận hành một DB instance và không tuyên bố khả năng failover Multi-AZ.
 
-Nói cách khác, project không cố chứng minh high availability bằng cách tạo nhiều tài nguyên đắt tiền trong lab. Project chứng minh cách thiết kế một nền tảng xử lý job nội bộ có thể chạy tiết kiệm, có queue bảo vệ workload, có monitoring/alerting và có IaC để mở rộng khi cần.
+Lớp VPC Endpoints trên diagram đại diện cho cơ chế truy cập riêng tới các AWS managed services cần thiết. Chi tiết từng loại endpoint, route table, security group và policy được quản lý trong Terraform thay vì trình bày trên sơ đồ tổng quan.
 
 ---
 
@@ -90,89 +75,80 @@ Nói cách khác, project không cố chứng minh high availability bằng các
 
 | Dịch vụ / Thành phần | Vai trò trong project |
 |---|---|
-| Amazon VPC | Tạo mạng riêng cho hệ thống, đặt EC2 và RDS trong private subnets, hạn chế public exposure. |
-| Amazon EC2 | Đóng vai trò Worker xử lý các internal batch jobs từ SQS. |
-| Amazon RDS PostgreSQL | Lưu dữ liệu hoặc metadata xử lý nghiệp vụ trong tầng database private. |
-| Amazon SQS | Hàng đợi bất đồng bộ giữa EventBridge và EC2 Worker; hỗ trợ retry và Dead Letter Queue. |
-| Amazon EventBridge | Tạo business jobs định kỳ và gửi message vào SQS. |
-| Amazon CloudWatch | Thu thập logs/metrics và kích hoạt alarm khi có bất thường. |
-| Amazon SNS | Gửi email cảnh báo tới Ops/Admin khi CloudWatch Alarm được kích hoạt. |
-| Amazon S3 | Lưu trữ dữ liệu, logs hoặc evidence phục vụ kiểm tra và audit. |
-| AWS Systems Manager | Cho phép quản trị EC2 thông qua Session Manager thay vì SSH public. |
-| AWS IAM | Quản lý quyền truy cập theo nguyên tắc least privilege. |
-| AWS KMS | Mã hóa dữ liệu lưu trữ cho các tài nguyên cần bảo vệ, bao gồm RDS storage. |
-| AWS Config | Theo dõi thay đổi cấu hình tài nguyên AWS theo thời gian. |
-| AWS CloudTrail | Ghi nhận API activity để phục vụ audit và điều tra sau sự cố. |
-| VPC Flow Logs | Ghi metadata lưu lượng mạng trong VPC vào CloudWatch để hỗ trợ troubleshooting và audit. |
-| VPC Endpoints | Cho phép EC2 truy cập các AWS services cần thiết qua private AWS network path. |
-| Terraform | Định nghĩa và triển khai hạ tầng dưới dạng Infrastructure as Code. |
-| OPA/Rego | Kiểm tra policy trước khi triển khai Terraform plan. |
+| Amazon VPC | Cô lập workload và tổ chức private subnets cho compute, database và private service access. |
+| Amazon EC2 | Worker xử lý các internal jobs lấy từ SQS. |
+| Amazon RDS for PostgreSQL | Lưu trữ dữ liệu và metadata nghiệp vụ. |
+| Amazon SQS | Hàng đợi bất đồng bộ giữa Scheduler và Worker; hỗ trợ retry và DLQ. |
+| Amazon EventBridge Scheduler | Tạo job định kỳ và gửi vào processing queue. |
+| Amazon CloudWatch | Thu thập telemetry, theo dõi hệ thống và đánh giá alarm. |
+| Amazon SNS | Gửi thông báo vận hành cho Ops/Admin. |
+| Amazon S3 | Lưu logs và audit evidence. |
+| AWS Systems Manager Session Manager | Quản trị EC2 mà không cần public SSH. |
+| AWS IAM | Cấp quyền cho người dùng, workload và các AWS services. |
+| AWS KMS | Bảo vệ dữ liệu ứng dụng và dữ liệu logs/audit. |
+| AWS Systems Manager Parameter Store | Lưu trữ bí mật database dưới dạng được bảo vệ. |
+| AWS CloudTrail | Ghi nhận hoạt động API trong AWS account. |
+| AWS Config | Theo dõi trạng thái và thay đổi cấu hình tài nguyên. |
+| VPC Flow Logs | Ghi nhận metadata lưu lượng mạng để hỗ trợ quan sát và điều tra. |
+| VPC Endpoints | Cung cấp đường truy cập riêng tới các AWS services cần thiết. |
+| Terraform | Định nghĩa, triển khai và cleanup hạ tầng. |
+| OPA/Rego | Kiểm tra policy trên Terraform plan trước khi apply. |
 
 ---
 
 ### 5. Thiết kế thành phần
 
-#### Tầng Compute
+#### Tầng Compute và Database
 
-EC2 Worker được đặt trong private subnet, không có public IP và không mở các cổng quản trị như SSH ra Internet. Worker đóng vai trò xử lý các batch jobs nội bộ, ví dụ đối soát dữ liệu giao dịch, validate dữ liệu định kỳ hoặc xử lý logs nghiệp vụ.
+EC2 Worker vận hành trong private app subnet và không được truy cập trực tiếp từ Internet. Worker sử dụng IAM role để tương tác với các AWS services được cấp phép. RDS PostgreSQL nằm trong tầng database private và chỉ phục vụ kết nối nội bộ từ workload phù hợp.
 
-Kỹ sư quản trị truy cập EC2 thông qua AWS Systems Manager Session Manager, thay vì SSH public. Cách này giúp giảm bề mặt tấn công và phù hợp với mục tiêu private-first của hệ thống.
-
-#### Tầng Database
-
-Tầng database sử dụng Amazon RDS PostgreSQL cấu hình Single-AZ, không public, chỉ nhận kết nối nội bộ từ EC2 Worker thông qua Security Group. Storage của RDS được mã hóa bằng AWS KMS. CloudWatch alarms được dùng để giám sát CPU và dung lượng lưu trữ.
+Thiết kế Single-AZ là quyết định tối ưu chi phí cho giai đoạn MVP. Nếu yêu cầu availability tăng, kiến trúc có thể được mở rộng thông qua thay đổi Terraform thay vì thiết kế lại toàn bộ nền tảng.
 
 #### Tầng Queue và Job Processing
 
-Amazon EventBridge tạo job định kỳ và gửi message vào Amazon SQS. EC2 Worker chủ động poll message từ SQS để xử lý. Mô hình này giúp tách rời producer và worker, tránh phụ thuộc vào xử lý đồng bộ, đồng thời hỗ trợ retry khi worker tạm thời không hoạt động.
+EventBridge Scheduler đóng vai trò producer, còn EC2 Worker đóng vai trò consumer. SQS nằm giữa hai thành phần để giảm phụ thuộc trực tiếp, giữ job khi worker tạm dừng và hỗ trợ retry. Dead Letter Queue cô lập các message không thể xử lý thành công để Ops/Admin điều tra hoặc xử lý lại.
 
-#### Failure Handling
+#### Tầng Monitoring và Operations
 
-SQS được cấu hình với Dead Letter Queue. Nếu message xử lý thất bại nhiều lần, message sẽ được chuyển sang DLQ thay vì bị mất hoặc retry vô hạn. DLQ giúp Ops/Admin điều tra lỗi, phân tích nguyên nhân và xử lý lại job khi cần.
+CloudWatch tiếp nhận telemetry của workload và network. DLQ Alarm theo dõi failed jobs và kích hoạt SNS khi cần thông báo. Session Manager cung cấp kênh quản trị EC2 mà không cần mở cổng quản trị public.
 
-#### Monitoring và Alerting
+#### Tầng Security và Governance
 
-CloudWatch thu thập logs/metrics và kích hoạt alarm khi phát hiện bất thường. SNS gửi email cảnh báo tới Ops/Admin. VPC Flow Logs gửi metadata lưu lượng mạng vào CloudWatch để hỗ trợ quan sát network traffic và điều tra sự cố.
-
-#### Audit và Governance
-
-CloudTrail ghi nhận API activity. AWS Config theo dõi thay đổi cấu hình tài nguyên. IAM kiểm soát quyền truy cập, KMS hỗ trợ mã hóa, S3 lưu trữ dữ liệu/log/evidence phục vụ kiểm tra sau triển khai. OPA/Rego đóng vai trò policy gate trước khi Terraform apply.
+IAM kiểm soát quyền truy cập; KMS bảo vệ dữ liệu; Parameter Store lưu trữ thông tin nhạy cảm. CloudTrail và AWS Config tạo audit trail về hoạt động và cấu hình, trong khi VPC Flow Logs hỗ trợ quan sát network behavior. Dữ liệu audit được tập trung vào S3 để phục vụ kiểm tra sau triển khai.
 
 ---
 
 ### 6. Luồng kiến trúc
 
-Các số trên diagram thể hiện ba nhóm luồng chính: deployment flow, business processing flow và operational flow.
+Các số trên diagram thể hiện ba nhóm hoạt động: deployment, job processing và operations.
 
-1. Developer thay đổi Terraform/IaC code.
-2. IaC Pipeline tạo plan và chuyển qua Policy Gate.
-3. Policy Gate kiểm tra cấu hình trước khi triển khai tài nguyên AWS.
-4. EventBridge tạo business job định kỳ và gửi message vào SQS.
-5. EC2 Worker trong VPC chủ động poll job từ SQS.
-6. EC2 Worker xử lý job và kết nối RDS khi cần lưu hoặc đọc dữ liệu.
-7. Nếu message xử lý thất bại nhiều lần, SQS chuyển message sang Dead Letter Queue.
-8. VPC Flow Logs gửi metadata lưu lượng mạng vào CloudWatch.
-9. EC2 truy cập CloudWatch thông qua VPC Endpoints để hỗ trợ monitoring/logging path.
-10. CloudWatch Alarm kích hoạt SNS.
-11. SNS gửi email cảnh báo tới Ops/Admin.
-12. CloudTrail, AWS Config và S3 hỗ trợ lưu trữ và đối chiếu audit evidence.
+1. Developer cập nhật mã nguồn Terraform.
+2. Terraform Pipeline tạo kế hoạch triển khai và chuyển kết quả qua OPA/Rego Policy Gate.
+3. Sau khi vượt qua policy gate, Terraform triển khai hoặc cập nhật tài nguyên AWS.
+4. EventBridge Scheduler tạo scheduled job và gửi message vào SQS Queue.
+5. EC2 Worker chủ động poll queue, nhận message và xác nhận message đã xử lý.
+6. VPC Endpoints cung cấp đường truy cập riêng giữa worker và các AWS managed services cần thiết.
+7. Worker kết nối tới RDS PostgreSQL khi job cần đọc hoặc ghi dữ liệu.
+8. Message thất bại nhiều lần được chuyển từ processing queue sang DLQ.
+9. CloudWatch Alarm theo dõi sự xuất hiện của failed messages trong DLQ.
+10. Khi alarm được kích hoạt, SNS gửi thông báo tới Ops/Admin.
+11. Ops/Admin sử dụng Session Manager để thực hiện các tác vụ quản trị EC2 mà không cần public SSH.
+
+Ngoài luồng được đánh số, CloudTrail và AWS Config đưa audit evidence vào S3; VPC Flow Logs gửi network telemetry tới CloudWatch.
 
 ---
 
 ### 7. Triển khai kỹ thuật
 
-Project được triển khai theo các giai đoạn:
+Hạ tầng được định nghĩa dưới dạng các Terraform modules theo từng nhóm chức năng như network, endpoints, compute, database, messaging, monitoring, logging và encryption. OPA/Rego được sử dụng để kiểm tra Terraform plan trước khi apply nhằm phát hiện những thay đổi không phù hợp với mục tiêu private-first.
 
-1. **Thiết kế kiến trúc:** Xác định hệ thống là backend job-processing platform, không phải website public.
-2. **Thiết kế network:** Tạo VPC, private subnets, route tables và security groups.
-3. **Thiết kế compute/database:** Tạo EC2 Worker và RDS PostgreSQL private.
-4. **Thiết kế messaging:** Tạo SQS, Dead Letter Queue và EventBridge.
-5. **Thiết kế monitoring/alerting:** Tạo CloudWatch alarms và SNS email notification.
-6. **Thiết kế audit/security:** Tạo CloudTrail, AWS Config, VPC Flow Logs, KMS và IAM.
-7. **Infrastructure as Code:** Viết Terraform modules cho từng nhóm tài nguyên.
-8. **Policy as Code:** Dùng OPA/Rego để kiểm tra Terraform plan trước khi apply.
-9. **Validation:** Kiểm thử luồng EventBridge → SQS → EC2 → processing log → DLQ/CloudWatch/SNS.
-10. **Cleanup:** Xóa tài nguyên bằng Terraform destroy để tránh phát sinh chi phí.
+Quá trình triển khai gồm ba bước chính:
+
+1. kiểm tra mã nguồn và tạo Terraform plan;
+2. đánh giá plan bằng policy gate;
+3. apply, validate luồng hệ thống và thu thập evidence.
+
+Chi tiết cấu hình tài nguyên, IAM permissions, security-group rules, endpoint definitions, alarm thresholds và lifecycle settings được lưu trong Terraform source code và không lặp lại trong proposal này.
 
 ---
 
@@ -180,32 +156,22 @@ Project được triển khai theo các giai đoạn:
 
 | Giai đoạn | Nội dung |
 |---|---|
-| Giai đoạn 1 | Nghiên cứu bài toán, xác định project là secure internal job-processing system. |
-| Giai đoạn 2 | Thiết kế kiến trúc AWS và vẽ diagram phản ánh đúng tài nguyên triển khai thực tế. |
-| Giai đoạn 3 | Viết Terraform modules cho VPC, EC2, RDS, SQS, EventBridge, CloudWatch, SNS, S3 và governance services. |
-| Giai đoạn 4 | Viết OPA/Rego policy gate để kiểm tra Terraform plan. |
-| Giai đoạn 5 | Deploy hạ tầng lên AWS và xác nhận tài nguyên trên AWS Console. |
-| Giai đoạn 6 | Validate business flow và chụp evidence. |
-| Giai đoạn 7 | Viết workshop end-to-end và cleanup tài nguyên để kiểm soát chi phí. |
+| Giai đoạn 1 | Xác định bài toán internal job processing và các yêu cầu private-first. |
+| Giai đoạn 2 | Thiết kế network boundary, workload flow và security controls. |
+| Giai đoạn 3 | Xây dựng Terraform modules và OPA/Rego policies. |
+| Giai đoạn 4 | Triển khai môi trường MVP trên AWS. |
+| Giai đoạn 5 | Kiểm thử job flow, failure handling, monitoring và audit evidence. |
+| Giai đoạn 6 | Hoàn thiện workshop, tài liệu và cleanup tài nguyên. |
 
 ---
 
 ### 9. Ước tính ngân sách
 
-Project được thiết kế theo hướng kiểm soát chi phí trong phạm vi lab.
+Project được thiết kế cho môi trường lab/MVP có lưu lượng thấp. Chi phí dự kiến khoảng **85–95 USD/tháng** nếu duy trì toàn bộ hạ tầng liên tục, nhưng có thể thấp hơn đáng kể khi chỉ triển khai trong thời gian thực hành, kiểm thử và chụp evidence.
 
-Đối với mô hình chạy liên tục 24/7, chi phí ước tính khoảng **85–95 USD/tháng**. Ước tính này dựa trên cấu hình:
+Thiết kế ưu tiên các tài nguyên quy mô nhỏ, RDS Single-AZ và kiến trúc không phụ thuộc NAT Gateway. Terraform hỗ trợ cleanup nhất quán sau khi hoàn thành bài lab để hạn chế chi phí ngoài dự kiến.
 
-- một EC2 Worker kích thước nhỏ;
-- một RDS PostgreSQL Single-AZ;
-- VPC Endpoints cần thiết;
-- SQS, EventBridge, CloudWatch, SNS ở mức lưu lượng thấp;
-- S3 lưu trữ dữ liệu/log/evidence dung lượng nhỏ;
-- KMS, CloudTrail, AWS Config và VPC Flow Logs ở mức sử dụng lab.
-
-Trong quá trình demo thực tế, chi phí có thể thấp hơn nhiều vì hạ tầng chỉ được triển khai trong thời gian ngắn, kiểm thử, chụp evidence và cleanup sau đó.
-
-Project tránh sử dụng NAT Gateway và không dùng public IP cho EC2 Worker để vừa giảm chi phí, vừa hạn chế public exposure. Đây là lý do hệ thống sử dụng VPC Endpoints cho các đường truy cập AWS services cần thiết.
+Con số thực tế phụ thuộc vào Region, thời gian vận hành, lượng logs và mức sử dụng các AWS services.
 
 ---
 
@@ -213,26 +179,26 @@ Project tránh sử dụng NAT Gateway và không dùng public IP cho EC2 Worker
 
 | Rủi ro | Ảnh hưởng | Cách giảm thiểu |
 |---|---|---|
-| Worker tạm dừng hoặc lỗi | Job chưa được xử lý ngay | SQS giữ message trước khi worker xử lý; DLQ giữ failed jobs. |
-| Database Single-AZ không có HA đầy đủ | Ảnh hưởng availability nếu AZ gặp sự cố | Dùng Single-AZ cho lab để tiết kiệm chi phí; có thể bật Multi-AZ khi triển khai production. |
-| Sai cấu hình security group hoặc public access | Rủi ro bảo mật | Dùng Terraform và OPA/Rego để kiểm soát cấu hình trước khi deploy. |
-| Chi phí AWS tăng do để quên tài nguyên | Vượt ngân sách thực tập | Có cleanup bằng Terraform destroy và theo dõi Billing Forecast. |
-| Thiếu bằng chứng vận hành | Khó audit hoặc review | Dùng CloudTrail, AWS Config, VPC Flow Logs, CloudWatch và evidence screenshots. |
+| EC2 Worker tạm dừng hoặc lỗi | Job không được xử lý ngay | SQS giữ job để worker tiếp tục xử lý sau khi khôi phục. |
+| RDS Single-AZ gặp sự cố | Database có thể gián đoạn | Chấp nhận trong phạm vi MVP; có lộ trình nâng cấp khi yêu cầu availability tăng. |
+| Message xử lý thất bại lặp lại | Retry kéo dài hoặc che khuất lỗi nghiệp vụ | DLQ cô lập failed messages và CloudWatch/SNS thông báo cho Ops/Admin. |
+| Sai cấu hình hạ tầng | Có thể làm giảm tính riêng tư hoặc khả năng kiểm soát | Terraform và OPA/Rego kiểm tra thay đổi trước khi triển khai. |
+| Thiếu bằng chứng vận hành | Khó review hoặc điều tra sau sự cố | CloudTrail, AWS Config, VPC Flow Logs, CloudWatch và S3 cung cấp audit evidence. |
+| Chi phí phát sinh ngoài dự kiến | Vượt ngân sách của môi trường lab | Theo dõi chi phí và cleanup tài nguyên bằng Terraform. |
 
 ---
 
 ### 11. Kết quả kỳ vọng
 
-Sau khi hoàn thành, project kỳ vọng đạt được các kết quả sau:
+Sau khi hoàn thành, project kỳ vọng chứng minh được rằng:
 
-- triển khai được một backend system xử lý job nội bộ trên AWS;
-- EC2 Worker và RDS không expose trực tiếp ra Internet;
-- business jobs được tạo bằng EventBridge và đưa vào SQS;
-- EC2 Worker có thể poll job từ SQS và xử lý;
-- failed jobs được cô lập bằng Dead Letter Queue;
-- CloudWatch/SNS gửi cảnh báo khi có bất thường;
-- CloudTrail, AWS Config, VPC Flow Logs, CloudWatch và S3 tạo audit evidence;
-- Terraform giúp tái triển khai và cleanup hạ tầng;
-- OPA/Rego giúp kiểm tra policy trước khi triển khai.
+- một internal job-processing platform có thể vận hành mà không cần public API;
+- EC2 Worker và RDS không bị expose trực tiếp ra Internet;
+- scheduled jobs được đưa vào queue và xử lý theo mô hình pull-based;
+- SQS và DLQ hỗ trợ bảo vệ, retry và cô lập failed jobs;
+- CloudWatch và SNS hỗ trợ phát hiện và thông báo sự cố vận hành;
+- Session Manager cho phép quản trị EC2 theo đường private;
+- CloudTrail, AWS Config, VPC Flow Logs và S3 tạo được audit evidence;
+- Terraform và OPA/Rego giúp hạ tầng có thể tái triển khai, kiểm tra và cleanup nhất quán.
 
-Về dài hạn, project có thể được mở rộng cho các workload nội bộ như financial reconciliation, customer data validation, compliance evidence generation, invoice processing hoặc scheduled reporting.
+Về dài hạn, nền tảng có thể được mở rộng cho các workload như financial reconciliation, customer data validation, compliance evidence generation, invoice processing hoặc scheduled reporting mà không làm thay đổi mô hình kiến trúc cốt lõi.
