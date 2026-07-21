@@ -31,24 +31,33 @@ Nhiều doanh nghiệp có các tác vụ nội bộ không phù hợp để tri
 - chạy các tác vụ compliance theo lịch;
 - đồng bộ hoặc kiểm tra dữ liệu giữa các hệ thống.
 
-Nếu các workload này được triển khai thủ công hoặc đặt trong môi trường public thiếu kiểm soát, doanh nghiệp có thể gặp các vấn đề như worker và database bị expose, job bị gián đoạn khi worker lỗi, thiếu cơ chế xử lý message thất bại, không có cảnh báo vận hành, thiếu audit evidence và khó kiểm soát cấu hình hạ tầng theo thời gian.
+Một kịch bản điển hình là doanh nghiệp định kỳ tiếp nhận file CSV chứa dữ liệu khách hàng hoặc giao dịch từ một hệ thống nội bộ. File cần được đưa vào quy trình kiểm tra để xác định đúng định dạng, đầy đủ trường dữ liệu và có thể tiếp tục được xử lý bởi các hệ thống phía sau. Tác vụ này không cần cung cấp public API và cũng không nên được thực hiện trên một worker có thể truy cập trực tiếp từ Internet.
+
+Nếu các workload này được triển khai thủ công hoặc đặt trong môi trường public thiếu kiểm soát, doanh nghiệp có thể gặp các vấn đề như worker và database bị expose, job bị gián đoạn khi worker lỗi, thiếu cơ chế lưu giữ và xử lý message thất bại, không có cảnh báo vận hành, thiếu audit evidence và khó kiểm soát cấu hình hạ tầng theo thời gian.
 
 #### Giải pháp đề xuất
 
-Project đề xuất một nền tảng xử lý job theo hướng private-first và queue-based. EventBridge Scheduler tạo job định kỳ và gửi vào Amazon SQS. EC2 Worker trong private subnet chủ động poll queue, xử lý job và kết nối tới RDS PostgreSQL khi cần lưu hoặc đọc dữ liệu.
+Project đề xuất một nền tảng xử lý job theo hướng private-first và queue-based. EventBridge Scheduler tạo job định kỳ và gửi message vào Amazon SQS. EC2 Worker trong private subnet chủ động lấy job từ queue, thực hiện tác vụ xử lý tương ứng và kết nối tới RDS PostgreSQL khi cần lưu hoặc đọc dữ liệu.
 
-Nếu job thất bại nhiều lần, message được chuyển sang Dead Letter Queue để cô lập và điều tra. CloudWatch theo dõi trạng thái hệ thống; khi DLQ xuất hiện message, CloudWatch Alarm kích hoạt SNS để gửi thông báo cho Ops/Admin. CloudTrail, AWS Config, VPC Flow Logs và S3 tạo dữ liệu phục vụ giám sát, kiểm tra và audit.
+Trong kịch bản minh họa, một message có thể đại diện cho yêu cầu kiểm tra file CSV khách hàng, bao gồm các thông tin như mã job, loại tác vụ, nguồn tạo job và tên file cần xử lý. SQS đóng vai trò trung gian giữa thành phần tạo job và Worker, giúp Worker không cần tiếp nhận request qua public API.
+
+Nếu Worker tạm thời không hoạt động, message vẫn được giữ trong queue để tiếp tục xử lý sau khi Worker được khôi phục. Nếu job thất bại nhiều lần, message được chuyển sang Dead Letter Queue để cô lập và phục vụ điều tra.
+
+CloudWatch theo dõi trạng thái hệ thống; khi DLQ xuất hiện message, CloudWatch Alarm có thể kích hoạt SNS để gửi thông báo cho Ops/Admin. CloudTrail, AWS Config, VPC Flow Logs và S3 cung cấp dữ liệu phục vụ giám sát, kiểm tra cấu hình và lưu trữ audit evidence.
+
+Toàn bộ hạ tầng được định nghĩa bằng Terraform. Trước khi triển khai, Terraform plan được kiểm tra bằng OPA/Rego nhằm phát hiện các cấu hình không phù hợp với mục tiêu private-first, chẳng hạn EC2 có public IP, RDS bật public access, security group mở cổng quản trị ra Internet hoặc tài nguyên lưu trữ không được mã hóa.
 
 #### Giá trị mang lại
 
-- hạn chế public exposure đối với worker và database;
-- tách rời producer và worker bằng hàng đợi bất đồng bộ;
-- giữ job khi worker tạm thời không hoạt động;
+- hạn chế public exposure đối với Worker và database;
+- không yêu cầu public API cho các tác vụ xử lý nội bộ;
+- tách rời thành phần tạo job và Worker bằng hàng đợi bất đồng bộ;
+- giữ job khi Worker tạm thời không hoạt động;
 - cô lập failed jobs bằng Dead Letter Queue;
 - hỗ trợ monitoring, alerting và audit evidence;
 - quản lý hạ tầng nhất quán bằng Infrastructure as Code;
-- kiểm tra các yêu cầu bảo mật trước khi triển khai;
-- tạo baseline có thể mở rộng khi nhu cầu vận hành tăng.
+- kiểm tra yêu cầu bảo mật trước khi triển khai bằng Policy as Code;
+- tạo một security baseline có thể tái sử dụng và mở rộng khi nhu cầu vận hành tăng.
 
 ---
 

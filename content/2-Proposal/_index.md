@@ -20,9 +20,9 @@ The architecture is implemented as a Lean MVP to balance security, verifiability
 
 ### 2. Problem Statement
 
-#### Current Challenges
+#### Current Problem
 
-Many organizations operate internal tasks that should not be deployed as publicly accessible services, including:
+Many organizations have internal workloads that are not suitable for deployment as public services, such as:
 
 - reconciling or validating transaction data;
 - validating customer data files;
@@ -31,24 +31,33 @@ Many organizations operate internal tasks that should not be deployed as publicl
 - running scheduled compliance tasks;
 - synchronizing or validating data between internal systems.
 
-If these workloads are deployed manually or placed in an insufficiently controlled public environment, the organization may face exposed workers and databases, interrupted jobs when a worker fails, inadequate handling of failed messages, missing operational alerts, insufficient audit evidence, and configuration drift over time.
+A typical scenario is an organization periodically receiving CSV files containing customer or transaction data from an internal system. These files must be checked to verify that they follow the expected format, contain all required fields, and are suitable for further processing by downstream systems. This type of workload does not require a public API and should not be executed on a worker that is directly accessible from the Internet.
+
+If these workloads are handled manually or deployed in an insufficiently controlled public environment, organizations may face risks such as exposed workers and databases, interrupted jobs when a worker fails, missing mechanisms for retaining and handling failed messages, lack of operational alerts, insufficient audit evidence, and difficulty controlling infrastructure configuration over time.
 
 #### Proposed Solution
 
-The project proposes a private-first, queue-based job-processing platform. EventBridge Scheduler creates scheduled jobs and sends them to Amazon SQS. An EC2 Worker in a private subnet actively polls the queue, processes each job, and connects to RDS for PostgreSQL when data must be read or stored.
+The project proposes a private-first and queue-based job-processing platform. Amazon EventBridge Scheduler creates scheduled jobs and sends messages to Amazon SQS. An EC2 Worker located in a private subnet retrieves jobs from the queue, performs the corresponding processing task, and connects to Amazon RDS for PostgreSQL when data must be stored or retrieved.
 
-If a job fails repeatedly, its message is moved to a Dead-Letter Queue for isolation and investigation. CloudWatch monitors the system, and when a message appears in the DLQ, a CloudWatch Alarm triggers Amazon SNS to notify the Ops/Admin team. CloudTrail, AWS Config, VPC Flow Logs, and Amazon S3 provide the data required for monitoring, review, and auditing.
+In the demonstration scenario, a message may represent a customer CSV validation request and contain information such as the job identifier, job type, job source, and file name. Amazon SQS acts as an intermediary between the job producer and the Worker, allowing the Worker to operate without receiving requests through a public API.
 
-#### Business and Technical Value
+If the Worker is temporarily unavailable, messages remain in the queue and can be processed after the Worker is restored. If a job fails repeatedly, the message is moved to a Dead Letter Queue for isolation and investigation.
 
-- reduces public exposure for the worker and database;
-- decouples job producers and consumers through asynchronous messaging;
-- retains jobs while the worker is temporarily unavailable;
-- isolates failed jobs through a Dead-Letter Queue;
-- supports monitoring, alerting, and audit evidence collection;
+Amazon CloudWatch monitors the system state. When messages appear in the Dead Letter Queue, a CloudWatch Alarm can trigger Amazon SNS to notify the Ops/Admin team. AWS CloudTrail, AWS Config, VPC Flow Logs, and Amazon S3 provide data for monitoring, configuration review, and audit evidence storage.
+
+The entire infrastructure is defined using Terraform. Before deployment, the Terraform plan is evaluated by OPA/Rego to detect configurations that violate the private-first security objective, such as an EC2 instance with a public IP address, a publicly accessible RDS instance, a security group exposing administrative ports to the Internet, or unencrypted storage resources.
+
+#### Value Provided
+
+- reduces public exposure of the Worker and database;
+- removes the need for a public API for internal processing tasks;
+- decouples the job producer and Worker through asynchronous messaging;
+- retains jobs when the Worker is temporarily unavailable;
+- isolates failed jobs using a Dead Letter Queue;
+- supports monitoring, alerting, and audit evidence;
 - manages infrastructure consistently through Infrastructure as Code;
-- evaluates security requirements before infrastructure changes are deployed;
-- provides a reusable baseline that can evolve with operational demand.
+- validates security requirements before deployment through Policy as Code;
+- provides a reusable security baseline that can be extended as operational requirements grow.
 
 ---
 
