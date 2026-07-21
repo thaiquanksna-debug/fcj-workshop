@@ -1,0 +1,520 @@
+<!doctype html><html lang=vi class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.134.3"><meta name=description content><meta name=author content="thienlh@thienlu.com"><link rel=icon href=/fcj-workshop/images/favicon.png type=image/png><title>Cài đặt môi trường cục bộ và quyền truy cập AWS IAM :: Báo cáo thực tập</title>
+<link href=/fcj-workshop/css/nucleus.css?1784604012 rel=stylesheet><link href=/fcj-workshop/css/fontawesome-all.min.css?1784604012 rel=stylesheet><link href=/fcj-workshop/css/hybrid.css?1784604012 rel=stylesheet><link href=/fcj-workshop/css/featherlight.min.css?1784604012 rel=stylesheet><link href=/fcj-workshop/css/perfect-scrollbar.min.css?1784604012 rel=stylesheet><link href=/fcj-workshop/css/auto-complete.css?1784604012 rel=stylesheet><link href=/fcj-workshop/css/atom-one-dark-reasonable.css?1784604012 rel=stylesheet><link href=/fcj-workshop/css/theme.css?1784604012 rel=stylesheet><link href=/fcj-workshop/css/hugo-theme.css?1784604012 rel=stylesheet><link href=/fcj-workshop/css/theme-workshop.css?1784604012 rel=stylesheet><script src=/fcj-workshop/js/jquery-3.3.1.min.js?1784604012></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style></head><body data-url=/fcj-workshop/vi/5-workshop/5.2-local-setup-and-iam/><nav id=sidebar class=showVisitedLinks><div id=header-wrapper><div id=header><a id=logo href=https://thaiquanksna-debug.github.io/fcj-workshop/><svg id="Layer_1" data-name="Layer 1" viewBox="0 0 60 30" width="30%"><defs><style>.cls-1{fill:#fff}.cls-2{fill:#fff;fill-rule:evenodd}</style></defs><title>AWS-Logo_White-Color</title><path class="cls-1" d="M14.09 10.85a4.7 4.7.0 00.19 1.48 7.73 7.73.0 00.54 1.19.77.77.0 01.12.38.64.64.0 01-.32.49l-1 .7a.83.83.0 01-.44.15.69.69.0 01-.49-.23 3.8 3.8.0 01-.6-.77q-.25-.42-.51-1a6.14 6.14.0 01-4.89 2.3 4.54 4.54.0 01-3.32-1.19 4.27 4.27.0 01-1.22-3.2 4.28 4.28.0 011.46-3.4A6.06 6.06.0 017.69 6.46a12.47 12.47.0 011.76.13q.92.13 1.91.36V5.73a3.65 3.65.0 00-.79-2.66A3.81 3.81.0 007.86 2.3a7.71 7.71.0 00-1.79.22 12.78 12.78.0 00-1.79.57 4.55 4.55.0 01-.58.22h-.26q-.35.0-.35-.52V2a1.09 1.09.0 01.12-.58 1.2 1.2.0 01.47-.35A10.88 10.88.0 015.77.32 10.19 10.19.0 018.36.0a6 6 0 014.35 1.35 5.49 5.49.0 011.38 4.09zM7.34 13.38a5.36 5.36.0 001.72-.31A3.63 3.63.0 0010.63 12 2.62 2.62.0 0011.19 11a5.63 5.63.0 00.16-1.44v-.7a14.35 14.35.0 00-1.53-.28 12.37 12.37.0 00-1.56-.1 3.84 3.84.0 00-2.47.67A2.34 2.34.0 005 11a2.35 2.35.0 00.61 1.76A2.4 2.4.0 007.34 13.38zm13.35 1.8a1 1 0 01-.64-.16 1.3 1.3.0 01-.35-.65L15.81 1.51a3 3 0 01-.15-.67.36.36.0 01.41-.41H17.7a1 1 0 01.65.16 1.4 1.4.0 01.33.65l2.79 11 2.59-11A1.17 1.17.0 0124.39.6a1.1 1.1.0 01.67-.16H26.4a1.1 1.1.0 01.67.16 1.17 1.17.0 01.32.65L30 12.39 32.88 1.25A1.39 1.39.0 0133.22.6a1 1 0 01.65-.16h1.54a.36.36.0 01.41.41 1.36 1.36.0 010 .26 3.64 3.64.0 01-.12.41l-4 12.86a1.3 1.3.0 01-.35.65 1 1 0 01-.64.16H29.25a1 1 0 01-.67-.17 1.26 1.26.0 01-.32-.67L25.67 3.64l-2.56 10.7a1.26 1.26.0 01-.32.67 1 1 0 01-.67.17zm21.36.44a11.28 11.28.0 01-2.56-.29 7.44 7.44.0 01-1.92-.67 1 1 0 01-.61-.93v-.84q0-.52.38-.52a.9.9.0 01.31.06l.42.17a8.77 8.77.0 001.83.58 9.78 9.78.0 002 .2 4.48 4.48.0 002.43-.55 1.76 1.76.0 00.86-1.57 1.61 1.61.0 00-.45-1.16A4.29 4.29.0 0043 9.22l-2.41-.76A5.15 5.15.0 0138 6.78a3.94 3.94.0 01-.83-2.41 3.7 3.7.0 01.45-1.85 4.47 4.47.0 011.19-1.37 5.27 5.27.0 011.7-.86A7.4 7.4.0 0142.6.0a8.87 8.87.0 011.12.07q.57.07 1.08.19t.95.26a4.27 4.27.0 01.7.29 1.59 1.59.0 01.49.41.94.94.0 01.15.55v.79q0 .52-.38.52a1.76 1.76.0 01-.64-.2 7.74 7.74.0 00-3.2-.64 4.37 4.37.0 00-2.21.47 1.6 1.6.0 00-.79 1.48 1.58 1.58.0 00.49 1.18 4.94 4.94.0 001.83.92L44.55 7a5.08 5.08.0 012.57 1.6A3.76 3.76.0 0147.9 11a4.21 4.21.0 01-.44 1.93 4.4 4.4.0 01-1.21 1.47 5.43 5.43.0 01-1.85.93A8.25 8.25.0 0142.05 15.62z"/><path class="cls-2" d="M45.19 23.81C39.72 27.85 31.78 30 25 30A36.64 36.64.0 01.22 20.57c-.51-.46-.06-1.09.56-.74A49.78 49.78.0 0025.53 26.4 49.23 49.23.0 0044.4 22.53C45.32 22.14 46.1 23.14 45.19 23.81z"/><path class="cls-2" d="M47.47 21.21c-.7-.9-4.63-.42-6.39-.21-.53.06-.62-.4-.14-.74 3.13-2.2 8.27-1.57 8.86-.83s-.16 5.89-3.09 8.35c-.45.38-.88.18-.68-.32C46.69 25.8 48.17 22.11 47.47 21.21z"/></svg></a></div><div class=searchbox><label for=search-by><i class="fas fa-search"></i></label>
+<input data-search-input id=search-by type=search placeholder=Search...>
+<span data-search-clear><i class="fas fa-times"></i></span></div><script type=text/javascript src=/fcj-workshop/js/lunr.min.js?1784604012></script><script type=text/javascript src=/fcj-workshop/js/auto-complete.js?1784604012></script><script type=text/javascript>var baseurl="https://thaiquanksna-debug.github.io/fcj-workshop//vi"</script><script type=text/javascript src=/fcj-workshop/js/search.js?1784604012></script></div><div class=highlightable><ul class=topics><li data-nav-id=/fcj-workshop/vi/1-worklog/ title="Nhật ký công việc" class=dd-item><a href=/fcj-workshop/vi/1-worklog/><b>1. </b>Nhật ký công việc
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/fcj-workshop/vi/1-worklog/1.1-week1/ title="Worklog tuần 1" class=dd-item><a href=/fcj-workshop/vi/1-worklog/1.1-week1/><b>1.1 </b>Worklog tuần 1
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/fcj-workshop/vi/1-worklog/1.2-week2/ title="Worklog tuần 2" class=dd-item><a href=/fcj-workshop/vi/1-worklog/1.2-week2/><b>1.2 </b>Worklog tuần 2
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/fcj-workshop/vi/1-worklog/1.3-week3/ title="Worklog tuần 3" class=dd-item><a href=/fcj-workshop/vi/1-worklog/1.3-week3/><b>1.3 </b>Worklog tuần 3
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/fcj-workshop/vi/1-worklog/1.4-week4/ title="Worklog tuần 4" class=dd-item><a href=/fcj-workshop/vi/1-worklog/1.4-week4/><b>1.4 </b>Worklog tuần 4
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/fcj-workshop/vi/1-worklog/1.5-week5/ title="Worklog tuần 5" class=dd-item><a href=/fcj-workshop/vi/1-worklog/1.5-week5/><b>1.5 </b>Worklog tuần 5
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/fcj-workshop/vi/1-worklog/1.6-week6/ title="Worklog tuần 6" class=dd-item><a href=/fcj-workshop/vi/1-worklog/1.6-week6/><b>1.6 </b>Worklog tuần 6
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/fcj-workshop/vi/1-worklog/1.7-week7/ title="Worklog tuần 7" class=dd-item><a href=/fcj-workshop/vi/1-worklog/1.7-week7/><b>1.7 </b>Worklog tuần 7
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/fcj-workshop/vi/1-worklog/1.8-week8/ title="Worklog tuần 8" class=dd-item><a href=/fcj-workshop/vi/1-worklog/1.8-week8/><b>1.8 </b>Worklog tuần 8
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/fcj-workshop/vi/1-worklog/1.9-week9/ title="Worklog tuần 9" class=dd-item><a href=/fcj-workshop/vi/1-worklog/1.9-week9/><b>1.9 </b>Worklog tuần 9
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/fcj-workshop/vi/1-worklog/1.10-week10/ title="Worklog tuần 10" class=dd-item><a href=/fcj-workshop/vi/1-worklog/1.10-week10/><b>1.10 </b>Worklog tuần 10
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/fcj-workshop/vi/1-worklog/1.11-week11/ title="Worklog tuần 11" class=dd-item><a href=/fcj-workshop/vi/1-worklog/1.11-week11/><b>1.11 </b>Worklog tuần 11
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/fcj-workshop/vi/1-worklog/1.12-week12/ title="Worklog tuần 12" class=dd-item><a href=/fcj-workshop/vi/1-worklog/1.12-week12/><b>1.12 </b>Worklog tuần 12
+<i class="fas fa-check read-icon"></i></a></li></ul></li><li data-nav-id=/fcj-workshop/vi/2-proposal/ title="Bản đề xuất" class=dd-item><a href=/fcj-workshop/vi/2-proposal/><b>2. </b>Bản đề xuất
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/fcj-workshop/vi/3-blogsposted/ title="Blogs Posted" class=dd-item><a href=/fcj-workshop/vi/3-blogsposted/><b>3. </b>Blogs Posted
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/fcj-workshop/vi/3-blogsposted/3.1-blog1/ title="Triển khai Website Tĩnh trên AWS với Amazon S3 Private, CloudFront và OAC" class=dd-item><a href=/fcj-workshop/vi/3-blogsposted/3.1-blog1/><b>3.1 Blog 1. </b>Triển khai Website Tĩnh trên AWS với Amazon S3 Private, CloudFront và OAC
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/fcj-workshop/vi/3-blogsposted/3.2-blog2/ title="Thiết kế MVP Trợ lý Du lịch Việt Nam với Amazon Bedrock, AWS Amplify và Amazon Location Service" class=dd-item><a href=/fcj-workshop/vi/3-blogsposted/3.2-blog2/><b>3.2 Blog 2. </b>Thiết kế MVP Trợ lý Du lịch Việt Nam với Amazon Bedrock, AWS Amplify và Amazon Location Service
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/fcj-workshop/vi/3-blogsposted/3.3-blog3/ title="Thiết kế MVP Hệ thống Quản lý Đơn hàng Hướng Sự kiện (Event-Driven) trên AWS" class=dd-item><a href=/fcj-workshop/vi/3-blogsposted/3.3-blog3/><b>3.3 Blog 3. </b>Thiết kế MVP Hệ thống Quản lý Đơn hàng Hướng Sự kiện (Event-Driven) trên AWS
+<i class="fas fa-check read-icon"></i></a></li></ul></li><li data-nav-id=/fcj-workshop/vi/4-eventparticipated/ title="Các events đã tham gia" class=dd-item><a href=/fcj-workshop/vi/4-eventparticipated/><b>4. </b>Các events đã tham gia
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/fcj-workshop/vi/4-eventparticipated/4.1-event1/ title="Event 1" class=dd-item><a href=/fcj-workshop/vi/4-eventparticipated/4.1-event1/><b>4.1. </b>Event 1
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/fcj-workshop/vi/4-eventparticipated/4.2-event2/ title="Event 2" class=dd-item><a href=/fcj-workshop/vi/4-eventparticipated/4.2-event2/><b>4.2. </b>Event 2
+<i class="fas fa-check read-icon"></i></a></li></ul></li><li data-nav-id=/fcj-workshop/vi/5-workshop/ title=Workshop class="dd-item
+parent"><a href=/fcj-workshop/vi/5-workshop/><b>5. </b>Workshop
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/fcj-workshop/vi/5-workshop/5.1-workshop-overview/ title="Tổng quan Workshop" class=dd-item><a href=/fcj-workshop/vi/5-workshop/5.1-workshop-overview/><b>5.1. </b>Tổng quan Workshop
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/fcj-workshop/vi/5-workshop/5.2-local-setup-and-iam/ title="Cài đặt môi trường cục bộ và quyền truy cập AWS IAM" class="dd-item
+active"><a href=/fcj-workshop/vi/5-workshop/5.2-local-setup-and-iam/><b>5.2. </b>Cài đặt môi trường cục bộ và quyền truy cập AWS IAM
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/fcj-workshop/vi/5-workshop/5.3-create-full-source-code/ title="Tạo full Terraform và OPA source code" class=dd-item><a href=/fcj-workshop/vi/5-workshop/5.3-create-full-source-code/><b>5.3. </b>Tạo full Terraform và OPA source code
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/fcj-workshop/vi/5-workshop/5.4-deploy-with-terraform-opa/ title="Deploy bằng Terraform và OPA" class=dd-item><a href=/fcj-workshop/vi/5-workshop/5.4-deploy-with-terraform-opa/><b>5.4. </b>Deploy bằng Terraform và OPA
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/fcj-workshop/vi/5-workshop/5.5-validate-business-flow/ title="Kết quả triển khai và xác thực hệ thống" class=dd-item><a href=/fcj-workshop/vi/5-workshop/5.5-validate-business-flow/><b>5.5. </b>Kết quả triển khai và xác thực hệ thống
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/fcj-workshop/vi/5-workshop/5.6-mandatory-evidence/ title="Evidence checklist" class=dd-item><a href=/fcj-workshop/vi/5-workshop/5.6-mandatory-evidence/><b>5.6. </b>Evidence checklist
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/fcj-workshop/vi/5-workshop/5.7-security-cost-cleanup/ title="Bảo mật, tối ưu chi phí và cleanup" class=dd-item><a href=/fcj-workshop/vi/5-workshop/5.7-security-cost-cleanup/><b>5.7. </b>Bảo mật, tối ưu chi phí và cleanup
+<i class="fas fa-check read-icon"></i></a></li></ul></li><li data-nav-id=/fcj-workshop/vi/6-self-evaluation/ title="Tự đánh giá" class=dd-item><a href=/fcj-workshop/vi/6-self-evaluation/><b>6. </b>Tự đánh giá
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/fcj-workshop/vi/7-feedback/ title="Đánh giá và Đề xuất" class=dd-item><a href=/fcj-workshop/vi/7-feedback/><b>7. </b>Đánh giá và Đề xuất
+<i class="fas fa-check read-icon"></i></a></li></ul><section id=shortcuts><h3>More</h3><ul><li><a class=padding href=http://awsstudygroup.com><i class='fab fa-aws'></i> AWS Study Group - Blog</a></li><li><a class=padding href=https://www.facebook.com/groups/awsstudygroupfcj><i class='fab fa-facebook'></i> AWS Study Group - Nhóm FB</a></li></ul></section><section id=prefooter><hr><ul><li><a class=padding><i class="fas fa-language fa-fw"></i><div class=select-style><select id=select-language onchange="location=this.value"><option id=en value=https://thaiquanksna-debug.github.io/fcj-workshop/5-workshop/5.2-local-setup-and-iam/>English</option><option id=vi value=https://thaiquanksna-debug.github.io/fcj-workshop/vi/5-workshop/5.2-local-setup-and-iam/ selected>Tiếng Việt</option></select><svg id="Capa_1" xmlns:xlink="http://www.w3.org/1999/xlink" width="255" height="255" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255"><g><g id="arrow-drop-down"><polygon points="0,63.75 127.5,191.25 255,63.75"/></g></g></svg></div></a></li><li><a class=padding href=# data-clear-history-toggle><i class="fas fa-history fa-fw"></i> Clear History</a></li></ul></section><section id=footer><left><br><br><b>Last Updated</b><br><i><font color=orange>21-07-2026</font>
+</i></left><left><br><br><b>Team</b><br><i><a href=https://www.facebook.com/groups/660548818043427 style=color:orange>First Cloud AI Journey</a>
+</i></left><script async defer src=https://buttons.github.io/buttons.js></script></section></div></nav><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=breadcrumbs itemscope itemtype=http://data-vocabulary.org/Breadcrumb><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links><a href=/fcj-workshop/vi/>Báo cáo thực tập</a> > <a href=/fcj-workshop/vi/5-workshop/>Workshop</a> > Cài đặt môi trường cục bộ và quyền truy cập AWS IAM</span></div><div class=progress><div class=wrapper><nav id=TableOfContents></nav></div></div></div></div><div id=head-tags></div><div id=body-inner><h1>Cài đặt môi trường cục bộ và quyền truy cập AWS IAM</h1><h1 id=mục-tiêu>Mục tiêu</h1><p>Mục này chuẩn bị máy tính Windows, VS Code, cấu hình AWS CLI SSO và tập hợp quyền (permission set) AWS cần thiết để triển khai workshop. Người đọc bắt đầu mà không có mã nguồn cục bộ.</p><div class="notices warning"><p>Chạy các câu lệnh Windows trong <strong>Windows PowerShell</strong>. Sau đó, khi workshop mở EC2 thông qua Session Manager, các câu lệnh được đánh dấu là <strong>EC2 Linux terminal</strong> phải được chạy bên trong terminal trình duyệt đó. Không trộn lẫn dấu backtick (`) của PowerShell với dấu gạch chéo ngược () của Linux shell.</p></div><h1 id=1-cài-đặt-các-công-cụ-cục-bộ>1. Cài đặt các công cụ cục bộ</h1><p>Mở <strong>Windows PowerShell với quyền Administrator</strong> và cài đặt các công cụ được yêu cầu:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=display:flex><span>winget install --id Microsoft.VisualStudioCode -e
+</span></span><span style=display:flex><span>winget install --id Git.Git -e
+</span></span><span style=display:flex><span>winget install --id Amazon.AWSCLI -e
+</span></span><span style=display:flex><span>winget install --id Hashicorp.Terraform -e
+</span></span></code></pre></div><p>Cài đặt OPA bằng file binary Windows cố định:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=display:flex><span>New-Item -ItemType Directory -Force C:\Tools\opa | Out-Null
+</span></span><span style=display:flex><span>Invoke-WebRequest -Uri <span style=color:#e6db74>&#34;https://github.com/open-policy-agent/opa/releases/download/v1.7.1/opa_windows_amd64.exe&#34;</span> -OutFile <span style=color:#e6db74>&#34;C:\Tools\opa\opa.exe&#34;</span>
+</span></span><span style=display:flex><span>$CurrentUserPath = [<span style=color:#66d9ef>Environment</span>]::GetEnvironmentVariable(<span style=color:#e6db74>&#34;Path&#34;</span>, <span style=color:#e6db74>&#34;User&#34;</span>)
+</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> ($CurrentUserPath <span style=color:#f92672>-notlike</span> <span style=color:#e6db74>&#34;*C:\Tools\opa*&#34;</span>) {{
+</span></span><span style=display:flex><span>  [<span style=color:#66d9ef>Environment</span>]::SetEnvironmentVariable(<span style=color:#e6db74>&#34;Path&#34;</span>, <span style=color:#e6db74>&#34;</span>$CurrentUserPath<span style=color:#e6db74>;C:\Tools\opa&#34;</span>, <span style=color:#e6db74>&#34;User&#34;</span>)
+</span></span><span style=display:flex><span>}}
+</span></span><span style=display:flex><span>Write-Host <span style=color:#e6db74>&#34;Close this PowerShell window and open a new PowerShell window before checking opa version.&#34;</span>
+</span></span></code></pre></div><p>Đóng PowerShell, mở một cửa sổ PowerShell mới, sau đó kiểm tra lại:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=display:flex><span>git --version
+</span></span><span style=display:flex><span>aws --version
+</span></span><span style=display:flex><span>terraform version
+</span></span><span style=display:flex><span>opa version
+</span></span><span style=display:flex><span>code --version
+</span></span></code></pre></div><p>Kết quả mong đợi: mọi câu lệnh đều in ra thông tin phiên bản. Nếu có câu lệnh nào không tìm thấy, hãy cài đặt lại công cụ đó trước khi tiếp tục.</p><h1 id=2-tạo-người-dùng-aws-iam-identity-center>2. Tạo người dùng AWS IAM Identity Center</h1><p>Mở AWS Console bằng tài khoản administrator (quản trị viên).</p><ol><li><p>Tìm kiếm <strong>IAM Identity Center</strong>.</p></li><li><p>Mở <strong>IAM Identity Center</strong>.
+<img alt=Photo src=/fcj-workshop/images/5-Workshop/private-by-default/screen2,1.png></p></li><li><p>Nếu IAM Identity Center chưa được bật, nhấp vào <strong>Enable</strong>.
+<img alt=Photo src=/fcj-workshop/images/5-Workshop/private-by-default/screen2,2.jpg>
+<img alt=Photo src=/fcj-workshop/images/5-Workshop/private-by-default/screen2,3.jpg></p></li><li><p>Đi tới mục <strong>Users</strong>.</p></li><li><p>Nhấp vào <strong>Add user</strong>.
+<img alt=Photo src=/fcj-workshop/images/5-Workshop/private-by-default/screen2,4.jpg></p></li><li><p>Tên người dùng (User name): <code>mvp-builder</code>.</p></li><li><p>Email: sử dụng email sẽ dùng để đăng nhập vào AWS.</p></li><li><p>Hoàn tất việc tạo người dùng.
+<img alt=Photo src=/fcj-workshop/images/5-Workshop/private-by-default/screen2,5.jpg></p></li></ol><h1 id=3-tạo-tập-hợp-quyền-permission-set>3. Tạo tập hợp quyền (Permission set)</h1><ol><li><p>Trong <strong>IAM Identity Center</strong>, đi tới mục <strong>Permission sets</strong>.
+<img alt=Photo src=/fcj-workshop/images/5-Workshop/private-by-default/screen2,6.png></p></li><li><p>Nhấp vào <strong>Create permission set</strong>.
+<img alt=Photo src=/fcj-workshop/images/5-Workshop/private-by-default/screen2,7.png></p></li><li><p>Chọn <strong>Custom permission set</strong>.
+<img alt=Photo src=/fcj-workshop/images/5-Workshop/private-by-default/screen2,8.jpg></p></li><li><p>Tên tập hợp quyền (Permission set name): <code>PrivateWorkloadTerraformOperator</code>.</p></li><li><p>Thời gian phiên làm việc (Session duration): chọn 4 giờ hoặc 8 giờ.</p></li><li><p>Tạo tập hợp quyền.
+<img alt=Photo src=/fcj-workshop/images/5-Workshop/private-by-default/screen2,9.png></p></li><li><p>Mở <code>PrivateWorkloadTerraformOperator</code>.</p></li><li><p>Đi tới <strong>Permissions Set và nhấp vào MVPTerraformOperator</strong>.</p></li><li><p>Nhấp vào <strong>Add inline policy</strong> hoặc <strong>Edit inline policy</strong>.
+<img alt=Photo src=/fcj-workshop/images/5-Workshop/private-by-default/screen2,10.jpg></p></li><li><p>Chọn tab <strong>JSON</strong>.</p></li><li><p>Xóa bất kỳ đoạn JSON giữ chỗ (placeholder) nào đang có sẵn.</p></li><li><p>Dán toàn bộ chính sách (policy) bên dưới vào.
+Chính sách inline đầy đủ:</p></li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;Version&#34;</span>: <span style=color:#e6db74>&#34;2012-10-17&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;Statement&#34;</span>: [
+</span></span><span style=display:flex><span>        {
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Sid&#34;</span>: <span style=color:#e6db74>&#34;PrivateWorkloadReadDiscovery&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Effect&#34;</span>: <span style=color:#e6db74>&#34;Allow&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Action&#34;</span>: [
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sts:GetCallerIdentity&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ec2:Describe*&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;rds:Describe*&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;kms:List*&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;kms:Describe*&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;kms:GetKeyPolicy&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;kms:GetKeyRotationStatus&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;logs:Describe*&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;logs:ListTagsForResource&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;cloudtrail:Describe*&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;cloudtrail:Get*&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;cloudtrail:ListTags&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;config:Describe*&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;config:Get*&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;cloudwatch:Describe*&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;cloudwatch:List*&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sqs:ListQueues&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sqs:GetQueueAttributes&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sqs:GetQueueUrl&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sqs:ListQueueTags&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sns:ListTopics&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sns:ListSubscriptions&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sns:ListSubscriptionsByTopic&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sns:GetTopicAttributes&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sns:GetSubscriptionAttributes&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sns:ListTagsForResource&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;scheduler:ListSchedules&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;scheduler:GetSchedule&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;scheduler:ListScheduleGroups&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;scheduler:ListTagsForResource&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;events:DescribeRule&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;events:ListRules&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;events:ListTargetsByRule&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;events:ListTagsForResource&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:ListAllMyBuckets&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:GetBucketLocation&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:GetBucketPolicy&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:GetBucketVersioning&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:GetBucketPublicAccessBlock&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:GetEncryptionConfiguration&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:GetBucketTagging&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:GetBucketCORS&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:GetBucketWebsite&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:GetBucketLogging&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:GetBucketNotification&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:GetBucketRequestPayment&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:GetLifecycleConfiguration&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:GetReplicationConfiguration&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:GetAccelerateConfiguration&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:GetBucketObjectLockConfiguration&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:GetBucketOwnershipControls&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;iam:Get*&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;iam:List*&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ssm:Describe*&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ssm:GetParameter&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ssm:GetParameters&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ssm:GetParametersByPath&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ssm:ListTagsForResource&#34;</span>
+</span></span><span style=display:flex><span>            ],
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Resource&#34;</span>: <span style=color:#e6db74>&#34;*&#34;</span>
+</span></span><span style=display:flex><span>        },
+</span></span><span style=display:flex><span>        {
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Sid&#34;</span>: <span style=color:#e6db74>&#34;PrivateWorkloadNetwork&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Effect&#34;</span>: <span style=color:#e6db74>&#34;Allow&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Action&#34;</span>: [
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ec2:CreateVpc&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ec2:DeleteVpc&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ec2:ModifyVpcAttribute&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ec2:CreateSubnet&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ec2:DeleteSubnet&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ec2:ModifySubnetAttribute&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ec2:CreateRouteTable&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ec2:DeleteRouteTable&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ec2:AssociateRouteTable&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ec2:DisassociateRouteTable&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ec2:ReplaceRouteTableAssociation&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ec2:CreateRoute&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ec2:DeleteRoute&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ec2:CreateSecurityGroup&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ec2:DeleteSecurityGroup&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ec2:AuthorizeSecurityGroupIngress&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ec2:RevokeSecurityGroupIngress&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ec2:AuthorizeSecurityGroupEgress&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ec2:RevokeSecurityGroupEgress&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ec2:CreateVpcEndpoint&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ec2:DeleteVpcEndpoints&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ec2:ModifyVpcEndpoint&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ec2:CreateFlowLogs&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ec2:DeleteFlowLogs&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ec2:CreateTags&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ec2:DeleteTags&#34;</span>
+</span></span><span style=display:flex><span>            ],
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Resource&#34;</span>: <span style=color:#e6db74>&#34;*&#34;</span>
+</span></span><span style=display:flex><span>        },
+</span></span><span style=display:flex><span>        {
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Sid&#34;</span>: <span style=color:#e6db74>&#34;PrivateWorkloadEC2PrivateWorker&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Effect&#34;</span>: <span style=color:#e6db74>&#34;Allow&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Action&#34;</span>: [
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ec2:RunInstances&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ec2:TerminateInstances&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ec2:StopInstances&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ec2:StartInstances&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ec2:RebootInstances&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ec2:ModifyInstanceAttribute&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ec2:AssociateIamInstanceProfile&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ec2:ReplaceIamInstanceProfileAssociation&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ec2:DisassociateIamInstanceProfile&#34;</span>
+</span></span><span style=display:flex><span>            ],
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Resource&#34;</span>: <span style=color:#e6db74>&#34;*&#34;</span>
+</span></span><span style=display:flex><span>        },
+</span></span><span style=display:flex><span>        {
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Sid&#34;</span>: <span style=color:#e6db74>&#34;PrivateWorkloadRDSPostgreSQL&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Effect&#34;</span>: <span style=color:#e6db74>&#34;Allow&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Action&#34;</span>: [
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;rds:CreateDBSubnetGroup&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;rds:DeleteDBSubnetGroup&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;rds:ModifyDBSubnetGroup&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;rds:CreateDBInstance&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;rds:DeleteDBInstance&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;rds:ModifyDBInstance&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;rds:AddTagsToResource&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;rds:RemoveTagsFromResource&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;rds:ListTagsForResource&#34;</span>
+</span></span><span style=display:flex><span>            ],
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Resource&#34;</span>: <span style=color:#e6db74>&#34;*&#34;</span>
+</span></span><span style=display:flex><span>        },
+</span></span><span style=display:flex><span>        {
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Sid&#34;</span>: <span style=color:#e6db74>&#34;PrivateWorkloadKMS&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Effect&#34;</span>: <span style=color:#e6db74>&#34;Allow&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Action&#34;</span>: [
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;kms:CreateKey&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;kms:ScheduleKeyDeletion&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;kms:CancelKeyDeletion&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;kms:EnableKeyRotation&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;kms:DisableKeyRotation&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;kms:GetKeyRotationStatus&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;kms:CreateAlias&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;kms:DeleteAlias&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;kms:UpdateAlias&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;kms:UpdateKeyDescription&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;kms:PutKeyPolicy&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;kms:GetKeyPolicy&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;kms:TagResource&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;kms:UntagResource&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;kms:ListResourceTags&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;kms:CreateGrant&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;kms:ListGrants&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;kms:RevokeGrant&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;kms:Encrypt&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;kms:Decrypt&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;kms:ReEncryptFrom&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;kms:ReEncryptTo&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;kms:GenerateDataKey&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;kms:GenerateDataKeyWithoutPlaintext&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;kms:GenerateDataKeyPair&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;kms:GenerateDataKeyPairWithoutPlaintext&#34;</span>
+</span></span><span style=display:flex><span>            ],
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Resource&#34;</span>: <span style=color:#e6db74>&#34;*&#34;</span>
+</span></span><span style=display:flex><span>        },
+</span></span><span style=display:flex><span>        {
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Sid&#34;</span>: <span style=color:#e6db74>&#34;PrivateWorkloadSSMParameterStore&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Effect&#34;</span>: <span style=color:#e6db74>&#34;Allow&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Action&#34;</span>: [
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ssm:PutParameter&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ssm:DeleteParameter&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ssm:AddTagsToResource&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ssm:RemoveTagsFromResource&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;ssm:ListTagsForResource&#34;</span>
+</span></span><span style=display:flex><span>            ],
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Resource&#34;</span>: <span style=color:#e6db74>&#34;arn:aws:ssm:us-east-1:*:parameter/mvp/*&#34;</span>
+</span></span><span style=display:flex><span>        },
+</span></span><span style=display:flex><span>        {
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Sid&#34;</span>: <span style=color:#e6db74>&#34;PrivateWorkloadLoggingAudit&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Effect&#34;</span>: <span style=color:#e6db74>&#34;Allow&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Action&#34;</span>: [
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;cloudtrail:CreateTrail&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;cloudtrail:UpdateTrail&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;cloudtrail:DeleteTrail&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;cloudtrail:StartLogging&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;cloudtrail:StopLogging&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;cloudtrail:PutEventSelectors&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;cloudtrail:AddTags&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;cloudtrail:RemoveTags&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;cloudtrail:ListTags&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;logs:CreateLogGroup&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;logs:DeleteLogGroup&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;logs:PutRetentionPolicy&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;logs:CreateLogStream&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;logs:PutLogEvents&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;logs:TagResource&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;logs:UntagResource&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;logs:AssociateKmsKey&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;logs:DisassociateKmsKey&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;config:PutConfigurationRecorder&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;config:DeleteConfigurationRecorder&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;config:StartConfigurationRecorder&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;config:StopConfigurationRecorder&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;config:PutDeliveryChannel&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;config:DeleteDeliveryChannel&#34;</span>
+</span></span><span style=display:flex><span>            ],
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Resource&#34;</span>: <span style=color:#e6db74>&#34;*&#34;</span>
+</span></span><span style=display:flex><span>        },
+</span></span><span style=display:flex><span>        {
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Sid&#34;</span>: <span style=color:#e6db74>&#34;PrivateWorkloadCloudWatchAlarms&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Effect&#34;</span>: <span style=color:#e6db74>&#34;Allow&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Action&#34;</span>: [
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;cloudwatch:PutMetricAlarm&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;cloudwatch:DeleteAlarms&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;cloudwatch:EnableAlarmActions&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;cloudwatch:DisableAlarmActions&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;cloudwatch:SetAlarmState&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;cloudwatch:TagResource&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;cloudwatch:UntagResource&#34;</span>
+</span></span><span style=display:flex><span>            ],
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Resource&#34;</span>: <span style=color:#e6db74>&#34;*&#34;</span>
+</span></span><span style=display:flex><span>        },
+</span></span><span style=display:flex><span>        {
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Sid&#34;</span>: <span style=color:#e6db74>&#34;PrivateWorkloadS3&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Effect&#34;</span>: <span style=color:#e6db74>&#34;Allow&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Action&#34;</span>: [
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:CreateBucket&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:DeleteBucket&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:PutEncryptionConfiguration&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:GetEncryptionConfiguration&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:PutBucketVersioning&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:PutBucketPolicy&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:PutBucketPublicAccessBlock&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:GetBucketPublicAccessBlock&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:GetBucketPolicy&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:GetBucketVersioning&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:GetBucketLocation&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:GetBucketTagging&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:PutBucketTagging&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:GetBucketAcl&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:PutBucketAcl&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:GetBucketCORS&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:GetBucketWebsite&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:GetBucketLogging&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:GetBucketNotification&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:GetBucketRequestPayment&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:GetLifecycleConfiguration&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:GetReplicationConfiguration&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:GetAccelerateConfiguration&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:GetBucketObjectLockConfiguration&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:GetBucketOwnershipControls&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:ListBucket&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:GetObject&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:PutObject&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;s3:DeleteObject&#34;</span>
+</span></span><span style=display:flex><span>            ],
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Resource&#34;</span>: [
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;arn:aws:s3:::private-by-default-mvp-*&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;arn:aws:s3:::private-by-default-mvp-*/*&#34;</span>
+</span></span><span style=display:flex><span>            ]
+</span></span><span style=display:flex><span>        },
+</span></span><span style=display:flex><span>        {
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Sid&#34;</span>: <span style=color:#e6db74>&#34;PrivateWorkloadSQSBusinessFlow&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Effect&#34;</span>: <span style=color:#e6db74>&#34;Allow&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Action&#34;</span>: [
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sqs:CreateQueue&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sqs:DeleteQueue&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sqs:GetQueueAttributes&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sqs:SetQueueAttributes&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sqs:GetQueueUrl&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sqs:ListQueues&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sqs:ListQueueTags&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sqs:TagQueue&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sqs:UntagQueue&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sqs:SendMessage&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sqs:ReceiveMessage&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sqs:DeleteMessage&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sqs:ChangeMessageVisibility&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sqs:PurgeQueue&#34;</span>
+</span></span><span style=display:flex><span>            ],
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Resource&#34;</span>: [
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;arn:aws:sqs:us-east-1:*:private-by-default-mvp-*&#34;</span>
+</span></span><span style=display:flex><span>            ]
+</span></span><span style=display:flex><span>        },
+</span></span><span style=display:flex><span>        {
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Sid&#34;</span>: <span style=color:#e6db74>&#34;PrivateWorkloadSNSAlerts&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Effect&#34;</span>: <span style=color:#e6db74>&#34;Allow&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Action&#34;</span>: [
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sns:CreateTopic&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sns:DeleteTopic&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sns:GetTopicAttributes&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sns:SetTopicAttributes&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sns:ListTopics&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sns:ListSubscriptions&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sns:ListSubscriptionsByTopic&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sns:ListTagsForResource&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sns:TagResource&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sns:UntagResource&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sns:Subscribe&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sns:Unsubscribe&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sns:GetSubscriptionAttributes&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sns:SetSubscriptionAttributes&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sns:Publish&#34;</span>
+</span></span><span style=display:flex><span>            ],
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Resource&#34;</span>: [
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;arn:aws:sns:us-east-1:*:private-by-default-mvp-*&#34;</span>
+</span></span><span style=display:flex><span>            ]
+</span></span><span style=display:flex><span>        },
+</span></span><span style=display:flex><span>        {
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Sid&#34;</span>: <span style=color:#e6db74>&#34;PrivateWorkloadSNSReadGlobal&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Effect&#34;</span>: <span style=color:#e6db74>&#34;Allow&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Action&#34;</span>: [
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sns:ListTopics&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;sns:ListSubscriptions&#34;</span>
+</span></span><span style=display:flex><span>            ],
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Resource&#34;</span>: <span style=color:#e6db74>&#34;*&#34;</span>
+</span></span><span style=display:flex><span>        },
+</span></span><span style=display:flex><span>        {
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Sid&#34;</span>: <span style=color:#e6db74>&#34;PrivateWorkloadSchedulerBusinessFlow&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Effect&#34;</span>: <span style=color:#e6db74>&#34;Allow&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Action&#34;</span>: [
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;scheduler:CreateSchedule&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;scheduler:DeleteSchedule&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;scheduler:GetSchedule&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;scheduler:UpdateSchedule&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;scheduler:ListSchedules&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;scheduler:ListScheduleGroups&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;scheduler:TagResource&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;scheduler:UntagResource&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;scheduler:ListTagsForResource&#34;</span>
+</span></span><span style=display:flex><span>            ],
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Resource&#34;</span>: [
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;arn:aws:scheduler:us-east-1:*:schedule/*/private-by-default-mvp-*&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;arn:aws:scheduler:us-east-1:*:schedule-group/*&#34;</span>
+</span></span><span style=display:flex><span>            ]
+</span></span><span style=display:flex><span>        },
+</span></span><span style=display:flex><span>        {
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Sid&#34;</span>: <span style=color:#e6db74>&#34;PrivateWorkloadEventBridgeRuleAlternative&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Effect&#34;</span>: <span style=color:#e6db74>&#34;Allow&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Action&#34;</span>: [
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;events:PutRule&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;events:DeleteRule&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;events:DescribeRule&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;events:EnableRule&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;events:DisableRule&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;events:PutTargets&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;events:RemoveTargets&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;events:ListRules&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;events:ListTargetsByRule&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;events:TagResource&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;events:UntagResource&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;events:ListTagsForResource&#34;</span>
+</span></span><span style=display:flex><span>            ],
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Resource&#34;</span>: [
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;arn:aws:events:us-east-1:*:rule/private-by-default-mvp-*&#34;</span>
+</span></span><span style=display:flex><span>            ]
+</span></span><span style=display:flex><span>        },
+</span></span><span style=display:flex><span>        {
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Sid&#34;</span>: <span style=color:#e6db74>&#34;PrivateWorkloadIAMServiceRoles&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Effect&#34;</span>: <span style=color:#e6db74>&#34;Allow&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Action&#34;</span>: [
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;iam:CreateRole&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;iam:DeleteRole&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;iam:UpdateAssumeRolePolicy&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;iam:AttachRolePolicy&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;iam:DetachRolePolicy&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;iam:PutRolePolicy&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;iam:DeleteRolePolicy&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;iam:TagRole&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;iam:UntagRole&#34;</span>
+</span></span><span style=display:flex><span>            ],
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Resource&#34;</span>: [
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;arn:aws:iam::*:role/private-by-default-mvp-*&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;arn:aws:iam::*:role/aws-service-role/*&#34;</span>
+</span></span><span style=display:flex><span>            ]
+</span></span><span style=display:flex><span>        },
+</span></span><span style=display:flex><span>        {
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Sid&#34;</span>: <span style=color:#e6db74>&#34;PrivateWorkloadIAMInstanceProfilesForPrivateWorker&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Effect&#34;</span>: <span style=color:#e6db74>&#34;Allow&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Action&#34;</span>: [
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;iam:CreateInstanceProfile&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;iam:GetInstanceProfile&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;iam:DeleteInstanceProfile&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;iam:AddRoleToInstanceProfile&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;iam:RemoveRoleFromInstanceProfile&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;iam:TagInstanceProfile&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;iam:UntagInstanceProfile&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;iam:ListInstanceProfilesForRole&#34;</span>
+</span></span><span style=display:flex><span>            ],
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Resource&#34;</span>: [
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;arn:aws:iam::*:instance-profile/private-by-default-mvp-*&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#34;arn:aws:iam::*:role/private-by-default-mvp-*&#34;</span>
+</span></span><span style=display:flex><span>            ]
+</span></span><span style=display:flex><span>        },
+</span></span><span style=display:flex><span>        {
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Sid&#34;</span>: <span style=color:#e6db74>&#34;PrivateWorkloadPassRoleToAWSServiceOnly&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Effect&#34;</span>: <span style=color:#e6db74>&#34;Allow&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Action&#34;</span>: <span style=color:#e6db74>&#34;iam:PassRole&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Resource&#34;</span>: <span style=color:#e6db74>&#34;arn:aws:iam::*:role/private-by-default-mvp-*&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Condition&#34;</span>: {
+</span></span><span style=display:flex><span>                <span style=color:#f92672>&#34;StringEquals&#34;</span>: {
+</span></span><span style=display:flex><span>                    <span style=color:#f92672>&#34;iam:PassedToService&#34;</span>: [
+</span></span><span style=display:flex><span>                        <span style=color:#e6db74>&#34;ec2.amazonaws.com&#34;</span>,
+</span></span><span style=display:flex><span>                        <span style=color:#e6db74>&#34;rds.amazonaws.com&#34;</span>,
+</span></span><span style=display:flex><span>                        <span style=color:#e6db74>&#34;config.amazonaws.com&#34;</span>,
+</span></span><span style=display:flex><span>                        <span style=color:#e6db74>&#34;vpc-flow-logs.amazonaws.com&#34;</span>,
+</span></span><span style=display:flex><span>                        <span style=color:#e6db74>&#34;scheduler.amazonaws.com&#34;</span>,
+</span></span><span style=display:flex><span>                        <span style=color:#e6db74>&#34;events.amazonaws.com&#34;</span>
+</span></span><span style=display:flex><span>                    ]
+</span></span><span style=display:flex><span>                }
+</span></span><span style=display:flex><span>            }
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    ]
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><ol start=13><li>Nhấp Create hoặc Save changes để lưu lại.
+<img alt=Photo src=/fcj-workshop/images/5-Workshop/private-by-default/screen2,11.jpg></li></ol><h1 id=4-gán-người-dùng-vào-tài-khoản-aws>4. Gán người dùng vào tài khoản AWS</h1><ol><li><p>Trong <strong>IAM Identity Center</strong>, đi tới mục <strong>AWS accounts</strong>.</p></li><li><p>Chọn tài khoản AWS mục tiêu.</p></li><li><p>Nhấp <strong>Assign users or groups</strong>.
+<img alt=Photo src=/fcj-workshop/images/5-Workshop/private-by-default/screen4,1.png></p></li><li><p>Chọn người dùng <code>mvp-builder</code>.
+<img alt=Photo src=/fcj-workshop/images/5-Workshop/private-by-default/screen4,2.png></p></li><li><p>Chọn tập hợp quyền <code>PrivateWorkloadTerraformOperator</code>.
+<img alt=Photo src=/fcj-workshop/images/5-Workshop/private-by-default/screen4,3.png></p></li><li><p>Gửi (Submit) yêu cầu gán người dùng.
+<img alt=Photo src=/fcj-workshop/images/5-Workshop/private-by-default/screen4,4.png></p></li></ol><h1 id=5-cấu-hình-aws-cli-sso-profile>5. Cấu hình AWS CLI SSO profile</h1><p>Trong IAM Identity Center, mở phần <strong>Settings</strong> (Cài đặt) và sao chép đường dẫn <strong>AWS access portal URL</strong>.</p><p>Chạy lệnh này trong Windows PowerShell:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=display:flex><span>aws configure sso
+</span></span></code></pre></div><p>Sử dụng các câu trả lời sau:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>SSO session name: mvp
+</span></span><span style=display:flex><span>SSO start URL: dán URL cổng truy cập AWS (AWS access portal URL) từ IAM Identity Center vào đây
+</span></span><span style=display:flex><span>SSO region: us-east-1
+</span></span><span style=display:flex><span>SSO registration scopes: nhấn Enter
+</span></span><span style=display:flex><span>Account: chọn tài khoản AWS của bạn
+</span></span><span style=display:flex><span>Role: PrivateWorkloadTerraformOperator
+</span></span><span style=display:flex><span>CLI default client Region: us-east-1
+</span></span><span style=display:flex><span>CLI default output format: json
+</span></span><span style=display:flex><span>CLI profile name: mvp
+</span></span></code></pre></div><p>Sau đó kiểm tra lại cấu hình profile:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=display:flex><span>aws sso logout
+</span></span><span style=display:flex><span>aws sso login --profile mvp --no-browser
+</span></span><span style=display:flex><span>aws sts get-caller-identity --profile mvp
+</span></span></code></pre></div><p>Kết quả mong đợi: câu lệnh in ra ID tài khoản AWS của bạn. Chỉ tiếp tục sau khi bước này chạy thành công.</p><h1 id=6-kiểm-tra-lại-môi-trường-cục-bộ-trước-khi-tiếp-tục>6. Kiểm tra lại môi trường cục bộ trước khi tiếp tục</h1><p>Trước khi tải mã nguồn về, hãy xác nhận rằng tất cả các công cụ bắt buộc đều hoạt động bình thường.</p><p>Chạy các lệnh:</p><p>git &ndash;version
+aws &ndash;version
+terraform version
+opa version
+code &ndash;version</p><p>Kết quả mong đợi:</p><p>git version x.x.x
+aws-cli/x.x.x
+Terraform v1.x.x
+Version: x.x.x
+1.xx.x</p><p>Nếu có bất kỳ câu lệnh nào trả về lỗi:</p><p>command not found</p><p>hoặc</p><p>is not recognized as an internal or external command</p><p>Hãy đóng PowerShell, mở lại và kiểm tra xem công cụ đó đã được cài đặt chính xác chưa.</p><h1 id=7-region-aws-khuyến-nghị>7. Region AWS khuyến nghị</h1><p>Workshop này đã được kiểm tra và thử nghiệm tại region:</p><p>us-east-1 (N. Virginia)</p><p>Việc sử dụng một region khác có thể yêu cầu bạn phải thay đổi:</p><p>AMI IDs
+Khả năng đáp ứng của dịch vụ (Service availability)
+Ước tính chi phí (Pricing estimates)
+Tên dịch vụ VPC Endpoint (VPC Endpoint service names)</p><p>Để đảm bảo tính nhất quán và dễ tái hiện, hãy sử dụng:</p><p>us-east-1</p><p>xuyên suốt workshop này.</p><h1 id=8-ước-tính-chi-phí-triển-khai>8. Ước tính chi phí triển khai</h1><p>Dự án này được thiết kế có chủ đích như một mô hình trình diễn cơ sở hạ tầng bảo mật với chi phí thấp.</p><p>Các dịch vụ chính cấu thành chi phí:</p><p>Dịch vụ | Chi phí ước tính hàng tháng
+EC2 Private Worker | 8–12 USD
+RDS PostgreSQL | 12–20 USD
+VPC Endpoints | 45–60 USD
+CloudWatch / SNS / SQS | 1–3 USD
+CloudTrail / Config / Logs | 2–5 USD</p><p>Tổng chi phí ước tính:</p><p>85–95 USD/tháng</p><p>khi chạy liên tục 24/7.</p><p>Chi phí sử dụng thực tế cho workshop thường thấp hơn nhiều vì môi trường này chỉ chạy trong một khoảng thời gian giới hạn.</p><p>Nhiều học viên nhận thấy chỉ tiêu tốn một vài AWS credit vì:</p><p>Hệ thống chỉ được triển khai trong thời gian ngắn
+Có thể áp dụng các hạn mức của Free Tier (Tầng miễn phí)
+Các tài nguyên được xóa bỏ ngay sau khi thử nghiệm xong</p><h1 id=9-tiêu-chí-thành-công>9. Tiêu chí thành công</h1><p>Vào cuối workshop, người đọc cần xác nhận được các điều sau:</p><p>Bảo mật</p><p>✓ Worker không có IP công khai (public IP)</p><p>✓ Cơ sở dữ liệu không có endpoint công khai (public endpoint)</p><p>✓ Không sử dụng SSH</p><p>✓ Truy cập qua Session Manager hoạt động bình thường</p><p>✓ Lưu lượng truy cập đi qua VPC Endpoints</p><p>Cơ sở hạ tầng</p><p>✓ Lệnh triển khai Terraform (deploy) thành công</p><p>✓ Lệnh hủy tài nguyên Terraform (destroy) thành công</p><p>✓ Xác thực chính sách OPA (Open Policy Agent) thành công</p><p>Luồng nghiệp vụ (Business Flow)</p><p>✓ Tin nhắn gửi đến được SQS</p><p>✓ Worker nhận được tin nhắn từ hàng đợi</p><p>✓ Worker xử lý thành công công việc</p><p>✓ CloudWatch nhận được log</p><p>✓ Tin nhắn lỗi được chuyển đến DLQ (Dead-Letter Queue)</p><p>✓ Thông báo qua email của SNS hoạt động bình thường</p><p>Kiểm toán (Audit)</p><p>✓ CloudTrail ghi lại đầy đủ hoạt động</p><p>✓ AWS Config ghi lại trạng thái tài nguyên</p><p>✓ VPC Flow Logs tồn tại dữ liệu</p><p>✓ Thu thập đầy đủ ảnh chụp màn hình làm bằng chứng</p><h1 id=10-trước-khi-chuyển-sang-phần-tiếp-theo>10. Trước khi chuyển sang phần tiếp theo</h1><p>Xác nhận:</p><p>[ ] Đã cài đặt VS Code</p><p>[ ] Đã cài đặt Git</p><p>[ ] Đã cài đặt AWS CLI</p><p>[ ] Đã cài đặt Terraform</p><p>[ ] Đã cài đặt OPA</p><p>[ ] Đã tạo người dùng IAM Identity Center</p><p>[ ] Đã gán tập hợp quyền (Permission set)</p><p>[ ] Đăng nhập AWS SSO thành công</p><p>[ ] Lệnh <code>aws sts get-caller-identity</code> hoạt động bình thường</p><p>Chỉ tiếp tục sang Mục 5.3 sau khi tất cả các mục trên đã được hoàn thành.</p><footer class=footline></footer></div></div><div id=navigation><a class="nav nav-prev" href=/fcj-workshop/vi/5-workshop/5.1-workshop-overview/ title="Tổng quan Workshop"><i class="fa fa-chevron-left"></i></a>
+<a class="nav nav-next" href=/fcj-workshop/vi/5-workshop/5.3-create-full-source-code/ title="Tạo full Terraform và OPA source code" style=margin-right:0><i class="fa fa-chevron-right"></i></a></div></section><div style=left:-1000px;overflow:scroll;position:absolute;top:-1000px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/fcj-workshop/js/clipboard.min.js?1784604012></script><script src=/fcj-workshop/js/perfect-scrollbar.min.js?1784604012></script><script src=/fcj-workshop/js/perfect-scrollbar.jquery.min.js?1784604012></script><script src=/fcj-workshop/js/jquery.sticky.js?1784604012></script><script src=/fcj-workshop/js/featherlight.min.js?1784604012></script><script src=/fcj-workshop/js/highlight.pack.js?1784604012></script><script>hljs.initHighlightingOnLoad()</script><script src=/fcj-workshop/js/modernizr.custom-3.6.0.js?1784604012></script><script src=/fcj-workshop/js/learn.js?1784604012></script><script src=/fcj-workshop/js/hugo-learn.js?1784604012></script><link href=/fcj-workshop/mermaid/mermaid.css?1784604012 rel=stylesheet><script src=/fcj-workshop/mermaid/mermaid.js?1784604012></script><script>mermaid.initialize({startOnLoad:!0})</script><script>(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,(e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date),(i=t.createElement(n),a=t.getElementsByTagName(n)[0]),i.async=1,i.src=s,a.parentNode.insertBefore(i,a)})(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-158079754-2","auto"),ga("send","pageview")</script></body></html>
