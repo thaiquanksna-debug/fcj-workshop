@@ -63,7 +63,7 @@ The entire infrastructure is defined using Terraform. Before deployment, the Ter
 
 ### 3. Solution Architecture
 
-![Secure Internal Job Processing Platform Architecture](/fcj-workshop/images/2-Proposal/private-by-default/diagram.jpg)
+![Secure Internal Job Processing Platform Architecture](/fcj-workshop/images/2-Proposal/private-by-default/architecture.jpg)
 
 **Figure:** High-level architecture of the Secure Internal Job Processing Platform on AWS.
 

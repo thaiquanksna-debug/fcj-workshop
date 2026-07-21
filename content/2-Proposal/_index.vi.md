@@ -63,7 +63,7 @@ Toàn bộ hạ tầng được định nghĩa bằng Terraform. Trước khi tr
 
 ### 3. Kiến trúc giải pháp
 
-![Secure Internal Job Processing Platform Architecture](/fcj-workshop/images/2-Proposal/private-by-default/diagram.jpg)
+![Secure Internal Job Processing Platform Architecture](/fcj-workshop/images/2-Proposal/private-by-default/architecture.jpg)
 
 **Hình:** Kiến trúc tổng quan của Secure Internal Job Processing Platform on AWS.
 
